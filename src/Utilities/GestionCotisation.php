@@ -47,7 +47,7 @@
 			return true;
 		}
 		
-		public function statistiquesRegion($annee, $region=null, $district=null)
+		public function statistiquesRegion($annee, $region=null, $district=null): array
 		{
 			$lists=[];$i=0;
 			

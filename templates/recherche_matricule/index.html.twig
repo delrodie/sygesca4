@@ -120,6 +120,7 @@
     <script>
         $(document).ready(function() {
             $('.select2').select2();
+            console.log('test console 1')
 
             // Gestion du select branche
             $('#divBranche').fadeOut()
@@ -151,6 +152,7 @@
                     $('#divBranche').children('#scout_branche').prop('disabled','disabled')
                     $('#adhesion_branche').children().remove()
                     regionList();
+                    console.log('nono')
                 }
             })
 
@@ -293,6 +295,7 @@
                 $('#scout_groupe').empty();
                 $.get("{{ absolute_url(path('requete_ajax_formulaire')) }}", {field: "regionIntialisation", value: null})
                     .done(function (data) {
+                        console.log(data)
                         if (data){
                             $('#scout_region').empty();
                             $('#scout_region').append("<option value=''>-</option>")
