@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} Recherche d'identité{% endblock %}
+
+{% block body %}
+    <div class="content">
+        <div class="info">
+            <h2>ASCCI <br><span>Adhésion 2021-2022</span></h2>
+            <p>
+                L'Association des Scouts Catholiques de Côte d'Ivoire, est une organisation à but non lucratif et apolitique qui œuvre dans le domaine de l'éducation des jeunes de 05 à 21 ans depuis 1937. De par sa méthode, elle assure un véritable lien social et garanti un environnement de prise en charge des problèmes de l'heure.
+            </p>
+            <a href="#" class="info-btn" onclick="recherche();">Ancien</a>
+            <a href="#" class="info-btn nouveau">Nouveau</a>
+        </div>
+
+
+    </div>
+{% endblock %}
+{% block section %}id="accueil"{% endblock %}
+{% block bodyID %}onload="identite()"{% endblock %}
+{% block  javascripts%}
+    {{ parent() }}
+    <script>
+        function identite() {
+            Swal.fire({
+                title: 'Renseigne les champs',
+                html:
+                    '<input type="text" id="recherche_nom" name="recherche_nom" placeholder="Entre ton nom de famille">' +
+                    '<input type="text" id="recherche_prenom" name="recherche_prenom" placeholder="Entre un prénom">' ,
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                showCancelButton: true,
+                confirmButtonText: '<i class="fas fa-search"></i> Valider',
+                cancelButtonText: 'Annuler',
+                footer: '<a href="{{ absolute_url(path('app_home')) }}">Je recherche par mon matricule</a>',
+                showLoaderOnConfirm: true,
+                preConfirm: () => {
+                    let nom = document.getElementById('recherche_nom').value;
+                    let prenom = document.getElementById('recherche_prenom').value;
+                    console.log(nom);
+                    return fetch(`{{ absolute_url(path('app_home')) }}recherche/identite/${nom}/${prenom}`)
+                    //return fetch(`//api.github.com/users/${login}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error(response.statusText)
+                            }
+                            return response.json()
+                        })
+                        .catch(error => {
+                            Swal.showValidationMessage(
+                                `Demande échouée: ${error}`
+                            )
+                        })
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    /*Swal.fire({
+                        title: `${result.value.nom}'s avatar`,
+                        imageUrl: result.value.avatar_url
+                    })*/
+                    Swal.fire(
+                        'Votre identite?',
+                        result.value.nom + ' ' + result.value.prenom,
+                        'success'
+                    )
+                }
+            })
+        }
+    </script>
+{% endblock %}

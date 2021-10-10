@@ -1,0 +1,362 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+:root{
+    --orange-dark: #e1251b;
+    --vert: #3dae2b;
+    --orange: #ff4d00;
+    --bleue: #001689;
+}
+
+section {
+    position:relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+section#accueil{
+    background:url('../images/bg2.jpg');
+    background-size: cover;
+    background-position: center;
+
+}
+
+header{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 30px 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+}
+
+header .logo{
+    position: relative;
+    color: #fff;
+    font-size: 30px;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+header .logo img{
+    align-items: center;
+    bottom: 0;
+    top: 0;
+}
+
+header .navigation a{
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 1px;
+    padding: 2px 15px;
+    border-radius: 20px;
+    transition: 0.3s;
+    transition-property: background;
+}
+
+header .navigation a:not(:last-child){
+    margin-right: 30px;
+}
+
+header .navigation a:hover{
+    background: #fff;
+    color: #000;
+}
+
+.content{
+    max-width: 650px;    
+    margin: 100px 100px;
+    padding-top: 90px;
+}
+
+.content .info h2{
+    color: var(--bleue);
+    font-size: 55px;
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 2px;
+    line-height: 60px;
+    margin-bottom: 30px;
+}
+
+.content .info h2 span{
+    color: #fff;
+    font-size: 50px;
+    font-weight: 600;
+}
+
+.content .info p{
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 40px;
+    width: 80%;
+    text-align: justify;
+}
+
+.content .info-btn{
+    color: #fff;
+    background: linear-gradient(30deg, var(--orange-dark), var(--orange));
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 10px 30px;
+    border-radius: 5px;
+    transition: 0.3s;
+    transition-property: background;
+}
+
+.content .info-btn.nouveau{
+    background: linear-gradient(30deg, rgb(255, 187, 0), var(--orange))
+}
+
+.content .info-btn:hover{
+    background: linear-gradient(130deg, var(--vert), var(--bleue));
+}
+
+.media-icons{
+    display:flex;
+    justify-content:center;
+    align-items: center;
+    margin: auto;
+}
+
+.media-icons a{
+    position: relative;
+    color: #fff;
+    font-size: 25px;
+    transition: 0.3s;
+    transition-property: transform;
+}
+
+.media-icons a:not(:last-child){
+    margin-right: 60px;
+}
+
+.media-icons a:hover{
+    transform: scale(1.5)
+}
+
+label.btn-menu{
+    display: none;
+}
+
+#check{
+    z-index: 3;
+    display: none;
+}
+
+body{
+    background:url('../images/bg3.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.container{
+    background-color: rgba(255, 255, 255, 0.9);
+    width: 70%;
+    min-width: 420px;
+    padding: 70px 50px;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    left: 50%;
+    top: 65%;
+    border-radius: 10px;
+    box-shadow: 20px 30px 25px rgba(0,0,0,0.15);
+    margin-top: 200px;
+}
+h1{
+    font-size: 30px;
+    text-align: center;
+    color: #1c093c;
+}
+form{
+    width: 100%;
+    position: relative;
+    margin: 30px auto 0 auto;
+}
+.row{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+    grid-gap: 20px 30px;
+    margin-bottom: 20px;
+}
+label{
+    color: #1c093c;
+    font-size: 14px;
+}
+textarea,
+select,
+input{
+    width: 100%;
+    font-weight: 400;
+    padding: 8px 10px;
+    border-radius: 5px;
+    border: 1.2px solid #c4cae0;
+    margin-top: 5px;
+}
+textarea{
+    resize: none
+}
+textarea:focus,
+select:focus,
+input:focus{
+    outline: none;
+    border-color: #6f6df4;
+}
+button{
+    border: none;
+    padding: 12px 25px;
+    background: linear-gradient(130deg, #4c4c4c, #4c46f5);
+    color: #fff;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+}
+button:hover{
+    border: none;
+    background: linear-gradient(-130deg, #4c46f5, blue);
+    cursor: pointer;
+}
+.button{
+    right: 0;
+    float: right;
+}
+
+@media only screen and (max-width: 1200px){
+    .container{
+        width: 100%;
+        margin-top: 200px;
+    }
+}
+
+@media (max-width: 960px){
+
+    header{
+        padding: 30px 30px;
+    }
+    header .navigation{
+        display: none;
+    }
+
+    label.btn-menu{
+        display: block;
+        font-size: 25px;
+        cursor: pointer;
+        color: #fff;
+        transition: 0.3s;
+        transition-property: color;
+        padding-right: 30px;
+    }
+
+    label.btn-menu:hover{
+        color: rgb(255, 255, 255);
+    }
+
+    label.btn-menu .close-btn{
+        display: none;
+    }
+
+    #check:checked ~ header .navigation{
+        z-index: 2;
+        position:fixed;
+        background: rgba(56, 0, 142, 0.8);
+        top:0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #check:checked ~ header .navigation a{
+        font-weight: 900;
+        margin-right: 0;
+        margin-bottom: 30px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        font-size: 26px;
+    }
+
+    #check:checked ~ header label.btn-menu .menu-btn{
+        display: none;
+    }
+
+    #check:checked ~ header label.btn-menu .close-btn{
+        z-index: 2;
+        display: block;
+        position: fixed;
+    }
+
+    label.btn-menu .menu-btn{
+        position: absolute;
+    }
+
+    header .logo{
+        position: absolute;
+        top: 0;
+    }
+
+    .content{
+        margin: auto 30px;
+    }
+
+    .content .info h2{
+        font-size: 45px;
+        line-height: 50px;
+    }
+
+    .content .info h2 span{
+        font-size: 30px;
+        font-weight: 600;
+    }
+
+    .content .info p{
+        font-size: 14px;
+        width: 50%;
+        color: rgb(5, 21, 110)
+    }
+}
+
+@media only screen and (max-width: 800px){
+    .container{
+        width: 90%;
+        margin-top: 400px;
+    }
+}
+
+@media (max-width: 560px){
+    .content .info h2{
+        font-size: 35px;
+        line-height: 40px;
+    }
+
+    .content .info h2 span{
+        font-size: 20px;
+        font-weight: 900;
+    }
+
+    .content .info p{
+        font-size: 14px;
+        color:#ffffff
+    }
+}
