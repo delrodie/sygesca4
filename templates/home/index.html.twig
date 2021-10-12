@@ -20,9 +20,6 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-        $().ready(function (){
-
-        });
         function recherche() {
             Swal.fire({
                 title: 'Entre ton matricule',
@@ -36,13 +33,17 @@
                 showLoaderOnConfirm: true,
                 cancelButtonText: 'Annuler',
                 footer: '<a href="{{ absolute_url(path('recherche_identite')) }}">J\'ai oublié mon matricule</a>',
-                preConfirm: (login) => {
-                    return fetch(`//api.github.com/users/${login}`)
+                preConfirm: (matricule) => {
+                    //return fetch(`//api.github.com/users/${login}`)
+                    return fetch(`{{ absolute_url(path('app_home')) }}ajax/${matricule}`)
                         .then(response => {
                             if (!response.ok) {
                                 throw new Error(response.statusText)
                             }
+                            let matricule = response.matricule;
+                            //console.log(matricule)
                             return response.json()
+
                         })
                         .catch(error => {
                             Swal.showValidationMessage(
@@ -53,7 +54,17 @@
                 allowOutsideClick: () => !Swal.isLoading()
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location = "http://adhesion.scoutascci.org/";
+                    let donnee = result.value
+                    if (!donnee){
+                        Swal.fire(
+                            `Le matricule entrée n'existe pas. Prière reprendre`
+                        )
+                    }else{
+                        console.log(donnee.matricule)
+                        //dump();
+                        //window.location = "http://adhesion.scoutascci.org/";
+                        window.location = "{{ absolute_url(path('app_home')) }}recherche/matricule/"+ donnee.slug;
+                    }
                 }
             })
         }

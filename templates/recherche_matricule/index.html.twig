@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} Inscription du scout {{ scout.nom|upper }} {{ scout.prenoms }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Formulaire d'adhesion</h1>
+        <form action="">
+            <div class="row">
+                <div class="column">
+                    <label for="scout_nom">Nom</label>
+                    <input type="text" id="scout_nom" name="scout_nom" placeholder="Nom" value="{{ scout.nom }}">
+                </div>
+                <div class="column">
+                    <label for="scout_prenom">Prenoms</label>
+                    <input type="text" id="scout_prenom" placeholder="Prenoms" name="scout_prenoms" value="{{ scout.prenoms }}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label for="scout_date_naissance">Date de naissance</label>
+                    <input type="date" id="scout_date_naissance" name="scout_date_naissance" placeholder="Date de naissance" value="{{ scout.datenaiss }}">
+                </div>
+                <div class="column">
+                    <label for="scout_lieu_naissance">Lieu de naissance</label>
+                    <input type="text" id="scout_lieu_naissance" name="scout_lieu_naissance" placeholder="Lieu de naissance" value="{{ scout.lieunaiss }}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label for="scout_sexe">Sexe</label>
+                    <select name="scout_sexe" id="scout_sexe">
+                        <option value="{{ scout.sexe }}">{{scout.sexe}}</option>
+                    </select>
+                </div>
+                <div class="column">
+                    <label for="scout_contact">Numero de telephone</label>
+                    <input type="tel" id="scout_contact" name="scout_contact" placeholder="Numero de telephone" value="{{ scout.contact }}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label for="scout_urgence">En cas d'urgence</label>
+                    <select name="scout_urgence" id="scout_urgence">
+                        <option value="{{ scout.urgence }}">{{ scout.urgence }}</option>
+                        <option value="">-- - --</option>
+                        <option value="PERE">PERE</option>
+                        <option value="MERE">MERE</option>
+                        <option value="AUTRE">AUTRE</option>
+                    </select>
+                </div>
+                <div class="column">
+                    <label for="scout_contact_parent">Contact parent</label>
+                    <input type="tel" id="scout_contact_parent" name="scout_contact_parent" placeholder="Contact parent" value="{{ scout.contactparent }}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label for="fonction">Fonction</label>
+                    <select name="fonction" id="fonction">
+                        <option value="">-- selectionnez --</option>
+                        <option value="1">PERE</option>
+                        <option value="1">MERE</option>
+                        <option value="1">AUTRE</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label for="scout_region">Region</label>
+                    <select name="scout_region" id="scout_region">
+                        <option value="">-- selectionnez --</option>
+                        <option value="1">PERE</option>
+                        <option value="1">MERE</option>
+                        <option value="1">AUTRE</option>
+                    </select>
+                </div>
+                <div class="column">
+                    <label for="scout_district">District</label>
+                    <select name="scout_district" id="scout_district">
+                        <option value="">-- selectionnez --</option>
+                        <option value="1">PERE</option>
+                        <option value="1">MERE</option>
+                        <option value="1">AUTRE</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label for="scout_groupe">Groupe</label>
+                    <select name="scout_groupe" id="scout_groupe">
+                        <option value="">-- selectionnez --</option>
+                        <option value="1">PERE</option>
+                        <option value="1">MERE</option>
+                        <option value="1">AUTRE</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column button">
+                    <button>Valider</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
