@@ -250,7 +250,7 @@
                                         cancelButtonText: 'Non, prochainement',
                                     }).then((result) => {
                                         if (result.value) {
-                                            console.log(result); dump();
+                                            console.log(result); //dump();
                                             window.location = "{{ absolute_url(path('app_home')) }}";
                                         } else {
                                             window.location.reload();
