@@ -251,7 +251,7 @@
                                     }).then((result) => {
                                         if (result.value) {
                                             console.log(result); //dump();
-                                            window.location = "{{ absolute_url(path('app_home')) }}";
+                                            window.location = "{{ absolute_url(path('print_badge')) }}";
                                         } else {
                                             window.location.reload();
                                         }

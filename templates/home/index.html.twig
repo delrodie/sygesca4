@@ -68,7 +68,7 @@
                         console.log(donnee.matricule)
                         //dump();
                         //window.location = "http://adhesion.scoutascci.org/";
-                        window.location = "{{ absolute_url(path('print_badge')) }}recherche/matricule/"+ donnee.slug;
+                        window.location = "{{ absolute_url(path('app_home')) }}recherche/matricule/"+ donnee.slug;
                     }
                 }
             })
