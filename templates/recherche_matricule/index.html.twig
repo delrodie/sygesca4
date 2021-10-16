@@ -56,45 +56,47 @@
             </div>
             <div class="row">
                 <div class="column">
-                    <label for="fonction">Fonction</label>
-                    <select name="fonction" id="fonction">
+                    <label for="scout_fonction">Fonction</label>
+                    <select name="scout_fonction" id="scout_fonction" class="select2">
                         <option value="">-- selectionnez --</option>
-                        <option value="1">PERE</option>
-                        <option value="1">MERE</option>
-                        <option value="1">AUTRE</option>
+                        {% for fonction in fonctions %}
+                            <option value="{{ fonction.id }}">{{ fonction.libelle }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div id="divBranche" class="column">
+                    <label for="">Branche</label>
+                    <select name="scout_branche" id="scout_branche" class="">
                     </select>
                 </div>
             </div>
             <div class="row">
                 <div class="column">
                     <label for="scout_region">Region</label>
-                    <select name="scout_region" id="scout_region">
+                    <select name="scout_region" id="scout_region" class="select2">
                         <option value="">-- selectionnez --</option>
-                        <option value="1">PERE</option>
-                        <option value="1">MERE</option>
-                        <option value="1">AUTRE</option>
+                        {% for region in regions %}
+                            <option value="{{ region.id }}">{{ region.nom }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="column">
                     <label for="scout_district">District</label>
-                    <select name="scout_district" id="scout_district">
+                    <select name="scout_district" id="scout_district" class="select2">
                         <option value="">-- selectionnez --</option>
-                        <option value="1">PERE</option>
-                        <option value="1">MERE</option>
-                        <option value="1">AUTRE</option>
                     </select>
                 </div>
             </div>
             <div class="row">
                 <div class="column">
                     <label for="scout_groupe">Groupe</label>
-                    <select name="scout_groupe" id="scout_groupe">
+                    <select name="scout_groupe" id="scout_groupe" class="select2">
                         <option value="">-- selectionnez --</option>
-                        <option value="1">PERE</option>
-                        <option value="1">MERE</option>
-                        <option value="1">AUTRE</option>
                     </select>
                 </div>
+            </div>
+            <div class="row">
+                <span style="color: red">Droit d'adhésion: <strong id="montant_adhesion"></strong></span>
             </div>
             <div class="row">
                 <div class="column button">
@@ -103,4 +105,135 @@
             </div>
         </form>
     </div>
+{% endblock %}
+{% block stylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    {{ parent() }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2();
+
+            // Gestion du select branche
+            $('#divBranche').fadeOut()
+            $('#divBranche').children('#scout_branche').prop('disabled', 'disabled')
+            $('#scout_fonction').change(function () {
+                let selectedFonction = $('#scout_fonction').val()
+                if (selectedFonction == 5 || selectedFonction == 6 || selectedFonction== 7){
+                    $('#divBranche').fadeIn();
+                    $('#divBranche').children('#scout_branche').prop('disabled', false)
+                    var branche = {
+                        "":"",
+                        "LOUVETAU":"LOUVETEAU",
+                        "ECLAIREUR":"ECLAIREUR",
+                        "CHEMINOT":"CHEMINOT",
+                        "ROUTIER":"ROUTIER"
+                    }
+                    $.each(branche, function (key, value) {
+                        $('#scout_branche').append($("<option></option>")
+                            .attr("value", key)
+                            .text(value)
+                        );
+                    })
+                    regionList();
+                }else if(selectedFonction == 26 || selectedFonction == 27 || selectedFonction == 30){
+					gestionEquipeNationale()
+				}
+                else{
+                    $('#divBranche').fadeOut()
+                    $('#divBranche').children('#scout_branche').prop('disabled','disabled')
+                    $('#adhesion_branche').children().remove()
+                    regionList();
+                }
+            })
+
+            // Gestion des fonction
+            $('#scout_fonction').on('change',function () {
+                let fonctionId = $(this).val()
+                $.get("{{ absolute_url(path('requete_ajax_formulaire')) }}", {field : "fonction", value: fonctionId})
+                    .done(function(data) {
+                        if(data) {
+                            $('#montant_adhesion').empty()
+                            $('#montant_adhesion').append(data+" FCFA")
+                        }
+                    })
+            })
+
+            // Gestion des district
+            $('#scout_region').on('change', function () {
+                let regionId = $(this).val()
+                $.get("{{ absolute_url(path('requete_ajax_formulaire')) }}", {field: "region", value: regionId})
+                    .done(function (data) {
+                        if (data){
+                            $('#scout_district').empty();
+                            $('#scout_district').append("<option value=''>-</option>")
+                            for (let i = 0; i < data.length; i++){
+                                const item = data[i]
+                                $('#scout_district').append(
+                                    "<option value="+item.id+">"+item.nom+"</option>"
+                                )
+                            }
+                        }
+                    })
+            })
+
+            // Gestion des groupes
+            $('#scout_district').on('change', function () {
+                let districtId = $(this).val()
+                $.get("{{ absolute_url(path('requete_ajax_formulaire')) }}", {field: "district",value: districtId})
+                    .done(function (data) {
+                        if (data){
+                            $('#scout_groupe').empty();
+                            $('#scout_groupe').append("<option value=''>-</option>")
+                            for (let i = 0; i < data.length; i++){
+                                const item = data[i]
+                                $('#scout_groupe').append(
+                                    "<option value="+item.id+">"+item.paroisse+"</option>"
+                                )
+                            }
+                        }
+                    })
+            })
+
+            /**
+			 * Fonction diverses correspondantes à la selection de la fonction et des regions
+             */
+
+            function regionList() {
+                $('#scout_region').empty();
+                $('#scout_district').empty();
+                $('#scout_groupe').empty();
+                $.get("{{ absolute_url(path('requete_ajax_formulaire')) }}", {field: "regionIntialisation", value: null})
+                    .done(function (data) {
+                        if (data){
+                            $('#scout_region').empty();
+                            $('#scout_region').append("<option value=''>-</option>")
+                            for (let i = 0; i < data.length; i++){
+                                const item = data[i]
+                                $('#scout_region').append(
+                                    "<option value="+item.id+">"+item.nom+"</option>"
+                                )
+                            }
+                        }
+                    })
+            }
+
+            function gestionEquipeNationale() {
+                $('#scout_region').empty(); $('#scout_district').empty(); $('#scout_groupe').empty();
+                $('#scout_region').append(
+                    "<option value="+1+">EQUIPE NATIONALE</option>"
+                )
+                $('#scout_district').append(
+                    "<option value="+1+">EQUIPE NATIONALE</option>"
+                )
+                $('#scout_groupe').append(
+                    "<option value="+1+">EQUIPE NATIONALE</option>"
+                )
+            }
+
+        });
+    </script>
 {% endblock %}

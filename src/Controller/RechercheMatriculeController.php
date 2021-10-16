@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Sygesca3\Fonctions;
+use App\Entity\Sygesca3\Region;
 use App\Entity\Sygesca3\Scout;
 use App\Utilities\GestionScout;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,7 +23,6 @@ class RechercheMatriculeController extends AbstractController
 
     public function __construct(GestionScout $gestionScout)
     {
-
         $this->gestionScout = $gestionScout;
     }
     /**
@@ -30,9 +31,11 @@ class RechercheMatriculeController extends AbstractController
     public function index(Request $request, $slug): Response
     {
         $scout = $this->getDoctrine()->getRepository(Scout::class, 'sygesca')->findOneBy(['slug'=>$slug]);
-
+		
         return $this->render('recherche_matricule/index.html.twig', [
             'scout' => $scout,
+            'fonctions' => $this->gestionScout->getFonctionByAge($scout->getDatenaiss()),
+            'regions' => $this->getDoctrine()->getRepository(Region::class)->findAll(),
         ]);
     }
 }

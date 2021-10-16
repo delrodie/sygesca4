@@ -2,16 +2,15 @@
 
 namespace App\Entity\Sygesca3;
 
-use App\Repository\GroupeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Groupe
+ * Objectif
  *
- * @ORM\Table(name="groupe", indexes={@ORM\Index(name="IDX_4B98C21B08FA272", columns={"district_id"})})
- * @ORM\Entity(repositoryClass=GroupeRepository::class)
+ * @ORM\Table(name="objectif", indexes={@ORM\Index(name="IDX_E2F8685198260155", columns={"region_id"})})
+ * @ORM\Entity
  */
-class Groupe
+class Objectif
 {
     /**
      * @var int
@@ -25,23 +24,16 @@ class Groupe
     /**
      * @var string
      *
-     * @ORM\Column(name="paroisse", type="string", length=255, nullable=false)
+     * @ORM\Column(name="annee", type="string", length=255, nullable=false)
      */
-    private $paroisse;
+    private $annee;
 
     /**
-     * @var string|null
+     * @var int
      *
-     * @ORM\Column(name="localite", type="string", length=255, nullable=true)
+     * @ORM\Column(name="valeur", type="integer", nullable=false)
      */
-    private $localite;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="slug", type="string", length=255, nullable=false)
-     */
-    private $slug;
+    private $valeur;
 
     /**
      * @var string|null
@@ -72,52 +64,40 @@ class Groupe
     private $modifieLe;
 
     /**
-     * @var \District
+     * @var \Region
      *
-     * @ORM\ManyToOne(targetEntity="District")
+     * @ORM\ManyToOne(targetEntity="Region")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="district_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="region_id", referencedColumnName="id")
      * })
      */
-    private $district;
+    private $region;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getParoisse(): ?string
+    public function getAnnee(): ?string
     {
-        return $this->paroisse;
+        return $this->annee;
     }
 
-    public function setParoisse(string $paroisse): self
+    public function setAnnee(string $annee): self
     {
-        $this->paroisse = $paroisse;
+        $this->annee = $annee;
 
         return $this;
     }
 
-    public function getLocalite(): ?string
+    public function getValeur(): ?int
     {
-        return $this->localite;
+        return $this->valeur;
     }
 
-    public function setLocalite(?string $localite): self
+    public function setValeur(int $valeur): self
     {
-        $this->localite = $localite;
-
-        return $this;
-    }
-
-    public function getSlug(): ?string
-    {
-        return $this->slug;
-    }
-
-    public function setSlug(string $slug): self
-    {
-        $this->slug = $slug;
+        $this->valeur = $valeur;
 
         return $this;
     }
@@ -170,14 +150,14 @@ class Groupe
         return $this;
     }
 
-    public function getDistrict(): ?District
+    public function getRegion(): ?Region
     {
-        return $this->district;
+        return $this->region;
     }
 
-    public function setDistrict(?District $district): self
+    public function setRegion(?Region $region): self
     {
-        $this->district = $district;
+        $this->region = $region;
 
         return $this;
     }

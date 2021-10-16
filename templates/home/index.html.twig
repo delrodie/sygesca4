@@ -2,6 +2,8 @@
 
 {% block title %}{{ parent() }} Adhésion 2021-2022{% endblock %}
 
+
+
 {% block body %}
     <div class="content">
         <div class="info">
@@ -56,9 +58,12 @@
                 if (result.isConfirmed) {
                     let donnee = result.value
                     if (!donnee){
-                        Swal.fire(
-                            `Le matricule entrée n'existe pas. Prière reprendre`
-                        )
+                        Swal.fire({
+                            title: 'Echec!',
+                            text: 'Le matricule entré n\'existe pas. Prière reprendre',
+                            icon: 'error',
+                            footer: '<a href="{{ absolute_url(path('recherche_identite')) }}">J\'ai oublié mon matricule</a>'
+                        })
                     }else{
                         console.log(donnee.matricule)
                         //dump();
