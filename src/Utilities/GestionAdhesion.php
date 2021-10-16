@@ -70,6 +70,7 @@
 				$scout->setOldId($adherant['old_id']);
 				$scout->setIdTransaction($id_transaction);
 				$scout->setStatusPaiement($status_paiement);
+				$scout->setGroupe($adherant['groupe']);
 				
 				$this->_em->persist($scout);
 				$this->_em->flush();

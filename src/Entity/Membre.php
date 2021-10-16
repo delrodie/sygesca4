@@ -3,14 +3,14 @@
 namespace App\Entity;
 
 use App\Entity\Sygesca3\Groupe;
-use App\Repository\AdherantRepository;
+use App\Entity\Sygesca3\Statut;
+use App\Repository\MembreRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=AdherantRepository::class)
- * @ORM\HasLifecycleCallbacks()
+ * @ORM\Entity(repositoryClass=MembreRepository::class)
  */
-class Adherant
+class Membre
 {
     /**
      * @ORM\Id
@@ -90,39 +90,14 @@ class Adherant
     private $slug;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $idTransaction;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $statusPaiement;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $createdAt;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $UpdatedAt;
-
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
-    private $oldId;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Groupe::class)
      */
     private $groupe;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\ManyToOne(targetEntity=Statut::class)
      */
-    private $result;
+    private $statut;
 
     public function getId(): ?int
     {
@@ -297,82 +272,6 @@ class Adherant
         return $this;
     }
 
-    public function getIdTransaction(): ?string
-    {
-        return $this->idTransaction;
-    }
-
-    public function setIdTransaction(?string $idTransaction): self
-    {
-        $this->idTransaction = $idTransaction;
-
-        return $this;
-    }
-
-    public function getStatusPaiement(): ?string
-    {
-        return $this->statusPaiement;
-    }
-
-    public function setStatusPaiement(?string $statusPaiement): self
-    {
-        $this->statusPaiement = $statusPaiement;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(?\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->UpdatedAt;
-    }
-
-    public function setUpdatedAt(?\DateTimeInterface $UpdatedAt): self
-    {
-        $this->UpdatedAt = $UpdatedAt;
-
-        return $this;
-    }
-	
-	/**
-	 * @ORM\PrePersist()
-	 */
-	public function setCreatedAtValue()
-                              	{
-                              		$this->createdAt = new \DateTime();
-                              	}
-	
-	/**
-	 * @ORM\PreUpdate()
-	 */
-	public function setUpdatedAtValue()
-                              	{
-                              		$this->updatedAt = new  \DateTime();
-                              	}
-
-    public function getOldId(): ?int
-    {
-        return $this->oldId;
-    }
-
-    public function setOldId(?int $oldId): self
-    {
-        $this->oldId = $oldId;
-
-        return $this;
-    }
-
     public function getGroupe(): ?Groupe
     {
         return $this->groupe;
@@ -385,14 +284,14 @@ class Adherant
         return $this;
     }
 
-    public function getResult(): ?string
+    public function getStatut(): ?Statut
     {
-        return $this->result;
+        return $this->statut;
     }
 
-    public function setResult(?string $result): self
+    public function setStatut(?Statut $statut): self
     {
-        $this->result = $result;
+        $this->statut = $statut;
 
         return $this;
     }

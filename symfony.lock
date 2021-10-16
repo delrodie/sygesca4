@@ -1,4 +1,10 @@
 {
+    "cinetpay/cinetpay-php": {
+        "version": "1.9.2"
+    },
+    "cocur/slugify": {
+        "version": "v4.0.0"
+    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.4"
     },

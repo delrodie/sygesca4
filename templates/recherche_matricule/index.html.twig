@@ -220,7 +220,7 @@
                         CinetPay.setConfig({
                             apikey: '18714242495c8ba3f4cf6068.77597603',
                             site_id: 422630,
-                            notify_url: 'http://sicre.scoutascci.org/cinetpay/notify/' + 422630
+                            notify_url: '{{ absolute_url(path('cinetpay_notification')) }}'
                         });
                         CinetPay.setSignatureData({
                             amount: response.amount,
@@ -259,8 +259,8 @@
                                     Swal.fire({
                                         type: 'error',
                                         title: 'Une erreur sur votre inscription.',
-                                        text: 'Veuillez contacter les administrateurs en leur transmettant le code ci-dessous.',
-                                        footer: response.id,
+                                        text: 'Veuillez reprendre.',
+                                        footer: response.id_transaction,
                                     })
                                 }
                             }
