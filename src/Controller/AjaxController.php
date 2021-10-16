@@ -8,6 +8,7 @@ use App\Entity\Sygesca3\Fonctions;
 use App\Entity\Sygesca3\Groupe;
 use App\Entity\Sygesca3\Region;
 use App\Entity\Sygesca3\Scout;
+use App\Utilities\GestionAdhesion;
 use App\Utilities\GestionScout;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,10 +26,12 @@ class AjaxController extends AbstractController
 {
 
     private $gestionScout;
-
-    public function __construct(GestionScout $gestionScout)
+	private $gestionAdhesion;
+	
+	public function __construct(GestionScout $gestionScout, GestionAdhesion $gestionAdhesion)
     {
         $this->gestionScout = $gestionScout;
+	    $this->gestionAdhesion = $gestionAdhesion;
     }
 
     /**
@@ -70,7 +73,7 @@ class AjaxController extends AbstractController
         }elseif ($field === 'fonction'){
             $fonction = $this->getDoctrine()->getRepository(Fonctions::class)->findOneBy(['id' => $value])->getMontant();
             $result = (int)$fonction / (1 - 0.035);
-            $result = $this->gestionScout->arrondiSuperieur($result, 5);
+            $result = $this->gestionAdhesion->arrondiSuperieur($result, 5);
             $data = $this->json($result);
         }elseif ($field === 'regionIntialisation'){
 			$regions = $this->getDoctrine()->getRepository(Region::class)->findAll();
