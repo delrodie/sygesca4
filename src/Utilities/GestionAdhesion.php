@@ -89,7 +89,7 @@
 					'description' => 'Adhesion de '.$scout->getNom().' '.$scout->getPrenoms()
 				];
 			}elseif ($verifAdherant->getStatusPaiement() !== 'VALID'){
-				$montant = $verifAdherant->getMontant();
+				$montant = $adherant['fonction']->getMontant();
 				$am = (int) $montant/(1 - 0.035);
 				$am = $this->arrondiSuperieur($am, 5);
 				
