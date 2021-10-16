@@ -88,6 +88,20 @@
 					'customer_surname' => $scout->getPrenoms(),
 					'description' => 'Adhesion de '.$scout->getNom().' '.$scout->getPrenoms()
 				];
+			}elseif ($verifAdherant->getStatusPaiement() !== 'VALID'){
+				$montant = $verifAdherant->getMontant();
+				$am = (int) $montant/(1 - 0.035);
+				$am = $this->arrondiSuperieur($am, 5);
+				
+				$message = [
+					'id_transaction' => $id_transaction,
+					'amount' => $am,
+					'status' => true,
+					'customer_id' => $verifAdherant->getId(),
+					'customer_name' => $verifAdherant->getNom(),
+					'customer_surname' => $verifAdherant->getPrenoms(),
+					'description' => 'Adhesion de '.$verifAdherant->getNom().' '.$verifAdherant->getPrenoms()
+				];
 			}else{
 				$message = [
 					'id_transaction' => null,
