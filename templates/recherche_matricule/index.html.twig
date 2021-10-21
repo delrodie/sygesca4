@@ -257,12 +257,19 @@
                                         }
                                     });
                                 }else{
+                                    //window.location = "{{ absolute_url(path('print_badge')) }}";
                                     Swal.fire({
                                         type: 'error',
                                         title: 'Une erreur sur votre inscription.',
                                         text: 'Veuillez reprendre.',
+                                        confirmButtonText: 'Reprendre',
                                         footer: response.id_transaction,
+                                    }).then((result) =>{
+                                        if (result.isConfirmed){
+                                            window.location.reload();
+                                        }
                                     })
+
                                 }
                             }
                         });

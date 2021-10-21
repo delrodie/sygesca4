@@ -7,20 +7,22 @@
 	use App\Entity\Sygesca3\Groupe;
 	use App\Entity\Sygesca3\Region;
 	use Doctrine\ORM\EntityManagerInterface;
+	use Symfony\Component\HttpFoundation\RequestStack;
 	
 	class GestionAdhesion
 	{
 		
 		private $_em;
+		private $requestStack;
 		
-		public function __construct(EntityManagerInterface $entityManager)
+		public function __construct(EntityManagerInterface $entityManager, RequestStack $requestStack)
 		{
 			$this->_em = $entityManager;
+			$this->requestStack = $requestStack;
 		}
 		
 		public function formulaire($request): array
 		{
-			
 			$adherant = [
 				'nom' => strtoupper($this->validForm($request->get('scout_nom'))),
 				'prenoms' => strtoupper($this->validForm($request->get('scout_prenoms'))),
@@ -79,6 +81,9 @@
 				$am = (int) $montant/(1 - 0.035);
 				$am = $this->arrondiSuperieur($am, 5);
 				
+				$session = $this->requestStack->getSession();
+				$session->set('matriculeTest', $scout->getMatricule());
+				
 				$message = [
 					'id_transaction' => $id_transaction,
 					'amount' => $am,
@@ -86,21 +91,26 @@
 					'customer_id' => $scout->getId(),
 					'customer_name' => $scout->getNom(),
 					'customer_surname' => $scout->getPrenoms(),
-					'description' => 'Adhesion de '.$scout->getNom().' '.$scout->getPrenoms()
+					'description' => 'Adhesion de '.$scout->getNom().' '.$scout->getPrenoms(),
+					'session' => $session
 				];
 			}elseif ($verifAdherant->getStatusPaiement() !== 'VALID'){
 				$montant = $adherant['fonction']->getMontant();
 				$am = (int) $montant/(1 - 0.035);
 				$am = $this->arrondiSuperieur($am, 5);
 				
+				$session = $this->requestStack->getSession();
+				$session->set('matricule', $verifAdherant->getMatricule());
+				
 				$message = [
-					'id_transaction' => $id_transaction,
+					'id_transaction' => $verifAdherant->getIdTransaction(),
 					'amount' => $am,
 					'status' => true,
 					'customer_id' => $verifAdherant->getId(),
 					'customer_name' => $verifAdherant->getNom(),
 					'customer_surname' => $verifAdherant->getPrenoms(),
-					'description' => 'Adhesion de '.$verifAdherant->getNom().' '.$verifAdherant->getPrenoms()
+					'description' => 'Adhesion de '.$verifAdherant->getNom().' '.$verifAdherant->getPrenoms(),
+					'session' => $session
 				];
 			}else{
 				$message = [

@@ -120,6 +120,10 @@ class CinetpayController extends AbstractController
 						$adherant->setStatusPaiement('VALID');
 						$this->_em->flush();
 						
+						$session = $request->getSession();
+						
+						$session->set('matricule', $data['scout']->getMatricule());
+						
 						$message = [
 							'id_transation' => $id_transaction,
 							'matricule' => $data['scout']->getMatricule()
