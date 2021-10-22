@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Membre;
 use App\Entity\Sygesca3\District;
 use App\Entity\Sygesca3\Fonctions;
 use App\Entity\Sygesca3\Groupe;
@@ -86,4 +87,21 @@ class AjaxController extends AbstractController
         return $data;
 
     }
+	
+	/**
+	 * @Route("/recherche/badge/{matricule}", name="recherche_ajax_badge", methods={"GET"})
+	 */
+	public function badge(Request $request, $matricule)
+	{
+		//Initialisation
+		$encoders = [new XmlEncoder(), new JsonEncoder()];
+		$normalizers = [new ObjectNormalizer()];
+		$serializer = new Serializer($normalizers, $encoders);
+		
+		$membre = $this->getDoctrine()->getRepository(Membre::class)->findOneBy(['matricule'=>$matricule]);
+		
+		if ($membre) $request->getSession()->set('matricule', $matricule);
+		
+		return $this->json($membre);
+	}
 }

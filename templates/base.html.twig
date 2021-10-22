@@ -6,6 +6,27 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>{% block title %}ASCCI : {% endblock %}</title>
+        <meta name="keywords" content="SCOUT, OMMS, ASCCI, scoutisme, abidjan, cote d'ivoire, paroisse, diocese, adhesion, inscription"  />
+        <meta name="description" content="Adhesion 2021-2022 à l'Association des Scouts Catholiques de Côte d'Ivoire" />
+        <meta name="Author" content="PIT, Delrodie AMOIKON">
+        <meta name="Copyright" content="www.scoutascci.org">
+        <meta name="Content-Language" content="FR">
+        <link rel="canonical" href="{{ absolute_url(path('app_home')) }}" />
+        <meta property="og:locale" content="fr_FR" />
+        <meta property="og:type" content="Item" />
+        <meta property="og:title" content="Cotisation nationale annuelle des membres de l'ASCCI - Association des Scouts Catholiques de Côte d'Ivoire" />
+        <meta property="og:description" content="Adhesion 2021-2022 à l'Association des Scouts Catholiques de Côte d'Ivoire" />
+        <meta property="og:url" content="{{ absolute_url(path('app_home')) }}" />
+        <meta property="og:site_name" content="ASCCI" />
+        <meta property="og:image" content="{{ absolute_url(asset('assets/images/ascci.png')) }}" />
+        <meta name="twitter:card" content="summary"/>
+        <meta name="twitter:description" content="Adhesion 2021-2022 à l'Association des Scouts Catholiques de Côte d'Ivoire"/>
+        <meta name="twitter:title" content="Cotisation nationale annuelle des membres de l'ASCCI - Association des Scouts Catholiques de Côte d'Ivoire"/>
+        <meta name="twitter:domain" content="ASCCI"/>
+        <meta name="twitter:image:src" content="{{ absolute_url(asset('assets/images/ascci.png')) }}"/>
+
+        <link rel="shortcut icon" href="{{ absolute_url(asset('assets/images/ascci.png')) }}">
+
         {% block stylesheets %}
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
@@ -20,9 +41,9 @@
             <div class="navigation">
                 <a href="{{ absolute_url(path('app_home')) }}">Accueil</a>
                 <a href="#">Inscription</a>
-                <a href="#">Re-inscription</a>
+                <a href="#" onclick="recherche()">Re-inscription</a>
                 <a href="#">Soucis</a>
-                <a href="#">Carte Provisoire</a>
+                <a href="#" onclick="badge()">Carte Provisoire</a>
             </div>
             <label for="check" class="btn-menu">
                 <i class="fa fa-bars menu-btn"></i>
@@ -45,6 +66,111 @@
         {% block javascripts %}
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
             <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"  async defer></script>
+            <script>
+                function badge() {
+                    Swal.fire({
+                        title: 'Entre ton matricule',
+                        input: 'text',
+                        inputAttributes: {
+                            autocapitalize: 'off'
+                        },
+                        showCancelButton: true,
+                        confirmButtonText: '<i class="fas fa-search"></i> Valider',
+                        inputPlaceholder: 'Entre ton matricule',
+                        showLoaderOnConfirm: true,
+                        cancelButtonText: 'Annuler',
+                        footer: '<a href="{{ absolute_url(path('recherche_identite')) }}">J\'ai oublié mon matricule</a>',
+                        preConfirm: (matricule) => {
+                            //return fetch(`//api.github.com/users/${login}`)
+                            return fetch(`{{ absolute_url(path('app_home')) }}ajax/recherche/badge/${matricule}`)
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error(response.statusText)
+                                        }
+                                        let matricule = response.matricule;
+                                        console.log(matricule)
+                                        return response.json()
+
+                                    })
+                                    .catch(error => {
+                                        Swal.showValidationMessage(
+                                                `Demande échouée: ${error}`
+                                        )
+                                    })
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            let donnee = result.value
+                            if (!donnee){
+                                Swal.fire({
+                                    title: 'Echec!',
+                                    text: 'Ton badge n\'est pas encore disponible. Si t\'es pas encore inscrit.e merci de le faire sinon prière vérifier le matricule entré',
+                                    icon: 'error',
+                                    footer: '<a href="{{ absolute_url(path('recherche_identite')) }}">J\'ai oublié mon matricule</a>'
+                                })
+                            }else{
+                                console.log(donnee.matricule)
+                                //dump();
+                                //window.location = "http://adhesion.scoutascci.org/";
+                                window.location = "{{ absolute_url(path('print_badge')) }}";
+                            }
+                        }
+                    })
+                }
+
+                function recherche() {
+                    Swal.fire({
+                        title: 'Entre ton matricule',
+                        input: 'text',
+                        inputAttributes: {
+                            autocapitalize: 'off'
+                        },
+                        showCancelButton: true,
+                        confirmButtonText: '<i class="fas fa-search"></i> Valider',
+                        inputPlaceholder: 'Entre ton matricule',
+                        showLoaderOnConfirm: true,
+                        cancelButtonText: 'Annuler',
+                        footer: '<a href="{{ absolute_url(path('recherche_identite')) }}">J\'ai oublié mon matricule</a>',
+                        preConfirm: (matricule) => {
+                            //return fetch(`//api.github.com/users/${login}`)
+                            return fetch(`{{ absolute_url(path('app_home')) }}ajax/${matricule}`)
+                                    .then(response => {
+                                        if (!response.ok) {
+                                            throw new Error(response.statusText)
+                                        }
+                                        let matricule = response.matricule;
+                                        //console.log(matricule)
+                                        return response.json()
+
+                                    })
+                                    .catch(error => {
+                                        Swal.showValidationMessage(
+                                                `Demande échouée: ${error}`
+                                        )
+                                    })
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            let donnee = result.value
+                            if (!donnee){
+                                Swal.fire({
+                                    title: 'Echec!',
+                                    text: 'Le matricule entré n\'existe pas. Prière reprendre',
+                                    icon: 'error',
+                                    footer: '<a href="{{ absolute_url(path('recherche_identite')) }}">J\'ai oublié mon matricule</a>'
+                                })
+                            }else{
+                                console.log(donnee.matricule)
+                                //dump();
+                                //window.location = "http://adhesion.scoutascci.org/";
+                                window.location = "{{ absolute_url(path('app_home')) }}recherche/matricule/"+ donnee.slug;
+                            }
+                        }
+                    })
+                }
+            </script>
         {% endblock %}
     </body>
 </html>

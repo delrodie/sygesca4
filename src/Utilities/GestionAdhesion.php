@@ -118,7 +118,7 @@
 					'status' => false
 				];
 			}
-			
+			$this->requestStack->getSession()->clear();
 			return $message;
 		}
 		

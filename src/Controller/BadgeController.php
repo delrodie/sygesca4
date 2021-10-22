@@ -38,7 +38,11 @@ class BadgeController extends AbstractController
 		
 		$session = $request->getSession()->get('matricule');
 		
+		if (!$session) return $this->redirectToRoute('app_home');
+		
 		$scout = $this->getDoctrine()->getRepository(Membre::class)->findOneBy(['matricule'=>$session]);
+		
+		$request->getSession()->clear();
 
         return $this->render('badge/index.html.twig', [
             'scout' => $scout,
