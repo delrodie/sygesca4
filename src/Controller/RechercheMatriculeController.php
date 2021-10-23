@@ -32,6 +32,8 @@ class RechercheMatriculeController extends AbstractController
     {
         $scout = $this->getDoctrine()->getRepository(Scout::class, 'sygesca')->findOneBy(['slug'=>$slug]);
 		
+		$request->getSession()->clear();
+		
         return $this->render('recherche_matricule/index.html.twig', [
             'scout' => $scout,
             'fonctions' => $this->gestionScout->getFonctionByAge($scout->getDatenaiss()),
