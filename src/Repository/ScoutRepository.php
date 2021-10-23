@@ -32,4 +32,23 @@ class ScoutRepository extends ServiceEntityRepository
             ->getQuery()->getResult()
         ;
     }
+	
+	/**
+	 * @param $nom
+	 * @param $prenom
+	 * @return int|mixed|string
+	 */
+	public function getByNomAndPrenoms($nom, $prenom)
+	{
+		return $this
+			->createQueryBuilder('s')
+			->where('s.nom LIKE :nom')
+			->andWhere('s.prenoms LIKE :prenom')
+			->setParameters([
+				'nom' => '%'.$nom.'%',
+				'prenom' => '%'.$prenom.'%'
+			])
+			->getQuery()->getResult()
+			;
+	}
 }

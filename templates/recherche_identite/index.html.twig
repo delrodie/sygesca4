@@ -25,8 +25,12 @@
             Swal.fire({
                 title: 'Renseigne les champs',
                 html:
+                        '<label for="recherche_nom">Nom</label>' +
                     '<input type="text" id="recherche_nom" name="recherche_nom" placeholder="Entre ton nom de famille">' +
-                    '<input type="text" id="recherche_prenom" name="recherche_prenom" placeholder="Entre un prénom">' ,
+                        '<label for="recherche_prenom">Prenoms</label>' +
+                    '<input type="text" id="recherche_prenom" name="recherche_prenom" placeholder="Entre tes prénoms">'  +
+                        '<label for="recherche_date">Date de naissance</label>' +
+                    '<input type="date" id="recherche_date" name="recherche_date" placeholder="Entre ta date de naissance">' ,
                 inputAttributes: {
                     autocapitalize: 'off'
                 },
@@ -38,8 +42,9 @@
                 preConfirm: () => {
                     let nom = document.getElementById('recherche_nom').value;
                     let prenom = document.getElementById('recherche_prenom').value;
+                    let dateNaissance = document.getElementById('recherche_date').value;
                     console.log(nom);
-                    return fetch(`{{ absolute_url(path('app_home')) }}recherche/identite/${nom}/${prenom}`)
+                    return fetch(`{{ absolute_url(path('app_home')) }}recherche/identite/${nom}/${prenom}/${dateNaissance}`)
                     //return fetch(`//api.github.com/users/${login}`)
                         .then(response => {
                             if (!response.ok) {
@@ -56,15 +61,28 @@
                 allowOutsideClick: () => !Swal.isLoading()
             }).then((result) => {
                 if (result.isConfirmed) {
-                    /*Swal.fire({
-                        title: `${result.value.nom}'s avatar`,
-                        imageUrl: result.value.avatar_url
-                    })*/
-                    Swal.fire(
-                        'Votre identite?',
-                        result.value.nom + ' ' + result.value.prenom,
-                        'success'
-                    )
+                    console.log(result)
+                    if (!result.value.slug){
+                        Swal.fire(
+                                'Echec?',
+                                result.value.nom + ' ' + result.value.prenom + ' n\'a pas été retrouvé.',
+                                'error'
+                        )
+                    }else{
+                        let timerInterval;
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Bravo!!!',
+                            html:'Merci de choisir ton nom dans la liste ',
+                            timer: 2500,
+                            timerProgressBar: true,
+                            showConfirmButton: false,
+                        }).then((result) =>{
+                            if (result.dismiss === Swal.DismissReason.timer){
+                                window.location = "{{ absolute_url(path('recherche_identite_liste')) }}"
+                            }
+                        })
+                    }
                 }
             })
         }

@@ -26,6 +26,17 @@ class GestionScout
 
     }
 	
+	public function getByNomAndPrenoms($nom, $prenom)
+	{
+		$sql = '
+			SELECT s
+			FROM App:Sygesca3\Region as s
+		';
+		$query = $this->entityManager->createQuery($sql);
+		
+		return $query->getResult();
+	}
+	
 	/**
 	 * Generation du matricule
 	 *
