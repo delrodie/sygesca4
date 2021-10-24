@@ -18,6 +18,51 @@ class CotisationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Cotisation::class);
     }
+	
+	public function findList($annee, $region=null, $district=null, $groupe=null)
+	{
+		$qb = $this->createQueryBuilder('c')
+			->addSelect('m')
+			->addSelect('g')
+			->addSelect('d')
+			->addSelect('r')
+			->addSelect('s')
+			->leftJoin('c.membre', 'm')
+			->leftJoin('m.groupe', 'g')
+			->leftJoin('g.district', 'd')
+			->leftJoin('d.region', 'r')
+			->leftJoin('m.statut', 's')
+			->orderBy('m.nom', 'ASC')
+			->addOrderBy('m.prenoms', 'ASC')
+			->where('c.annee = :annee')
+		;
+		if ($region){
+			$qb->andWhere('r.id = :region')
+				->setParameters([
+					'region' => $region,
+					'annee' => $annee
+				])
+			;
+		}elseif ($district){
+			$qb->andWhere('d.id = :district')
+				->setParameters([
+					'district' => $district,
+					'annee' => $annee
+				])
+			;
+		}elseif ($groupe){
+			$qb->andWhere('g.id = :groupe')
+				->setParameters([
+					'groupe' => $groupe,
+					'annee' => $annee
+				]);
+		}else{
+			$qb->setParameter('annee', $annee);
+		}
+		$query = $qb->getQuery()->getResult(); //dd($query);
+		
+		return $query;
+	}
 
     // /**
     //  * @return Cotisation[] Returns an array of Cotisation objects

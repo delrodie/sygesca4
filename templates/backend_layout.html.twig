@@ -39,7 +39,7 @@
                     </li>
                     <hr class="gestion">
                     <li>
-                        <a href="" title="Scouts">
+                        <a href="{{ absolute_url(path('sygesca_gestion_liste')) }}" title="Scouts">
                             <span class="ti-user"></span> <span>Scouts</span>
                         </a>
                     </li>
@@ -109,137 +109,7 @@
                 </div>
             </header>
 
-            <main>
-                <h2 class="dash-title">Overview</h2>
-                <div class="dash-cards">
-
-                    <div class="card-single">
-                        <div class="card-body">
-                            <span class="ti-briefcase"></span>
-                            <div>
-                                <h5>Account Balance</h5>
-                                <h4>322</h4>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <a href="">View All</a>
-                        </div>
-                    </div>
-
-
-                    <div class="card-single">
-                        <div class="card-body">
-                            <span class="ti-reload"></span>
-                            <div>
-                                <h5>Account Balance</h5>
-                                <h4>322</h4>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <a href="">View All</a>
-                        </div>
-                    </div>
-
-
-                    <div class="card-single">
-                        <div class="card-body">
-                            <span class="ti-check-box"></span>
-                            <div>
-                                <h5>Account Balance</h5>
-                                <h4>322</h4>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <a href="">View All</a>
-                        </div>
-                    </div>
-
-                </div>
-
-                <section class="recent">
-                    <div class="activity-grid">
-                        <div class="activity-card">
-                            <h3>Recent Activity</h3>
-
-                            <div class="table-responsive">
-                                <table>
-                                    <thead>
-                                    <tr>
-                                        <th>Project</th>
-                                        <th>Start Date</th>
-                                        <th>End Date</th>
-                                        <th>Team</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>App developpement</td>
-                                        <td>Test d'immacurite</td>
-                                        <td>aucun</td>
-                                        <td>vendred</td>
-                                        <td><span class="badge warning">Aussi</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>App developpement</td>
-                                        <td>Test d'immacurite</td>
-                                        <td>aucun</td>
-                                        <td>vendred</td>
-                                        <td><span class="badge success">Aussi</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>App developpement</td>
-                                        <td>Test d'immacurite</td>
-                                        <td>aucun</td>
-                                        <td>vendred</td>
-                                        <td><span class="badge warning">Aussi</span></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="summary">
-                            <div class="summary-card">
-                                <div class="summary-single">
-                                    <span class="ti-id-badge"></span>
-                                    <div>
-                                        <h5>196</h5>
-                                        <small>Number of staff</small>
-                                    </div>
-                                </div>
-                                <div class="summary-single">
-                                    <span class="ti-calendar"></span>
-                                    <div>
-                                        <h5>196</h5>
-                                        <small>Number of staff</small>
-                                    </div>
-                                </div>
-                                <div class="summary-single">
-                                    <span class="ti-face-smile"></span>
-                                    <div>
-                                        <h5>12</h5>
-                                        <small>Number of staff</small>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="bday-card">
-                                <div class="bday-img"></div>
-                                <div class="bday-info">
-                                    <h5>Dwaye</h5>
-                                    <small>Birthday today</small>
-
-                                    <div>
-                                        <button>
-                                            <span class="ti-gift"></span> Whish him
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </main>
+            {% block body %}{% endblock %}
         </div>
 
         {% block javascripts %}
