@@ -63,6 +63,7 @@ class CotisationRepository extends ServiceEntityRepository
 		
 		return $query;
 	}
+	
 
     // /**
     //  * @return Cotisation[] Returns an array of Cotisation objects
