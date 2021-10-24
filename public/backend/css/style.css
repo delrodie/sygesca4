@@ -202,10 +202,24 @@ main{
     color: var(--color-dark);
 }
 
-.dash-cards, .formulaire{
+.dash-cards{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-column-gap: 3rem;
+}
+.formulaire form{
+    display: flex;
+    align-content: center;
+    margin: auto;
+    width: 60%;
+}
+.formulaire form select{
+    display: flex;
+}
+.formulaire form label{
+    display: flex;
+    padding-right: 20px;
+    margin: auto 0;
 }
 
 .card-single{

@@ -32,10 +32,24 @@ class SygescaGestionController extends AbstractController
     /**
      * @Route("/", name="sygesca_gestion_liste", methods={"GET","POST"})
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        return $this->render('sygesca_gestion/index.html.twig', [
+		// Declaration variable
+	    $region = null;
+		
+		// Request
+		$regionID = $request->get('region');
+		
+		if ($regionID){
+			$region = $this->regionReposiroty->findOneBy(['id'=>$regionID]);
+			$template = 'sygesca_gestion/region.html.twig';
+		}else{
+			$template = 'sygesca_gestion/index.html.twig';
+		}
+		
+        return $this->render($template, [
             'regions' => $this->regionReposiroty->findAll(),
+	        'region' => $region
         ]);
     }
 	
@@ -49,10 +63,13 @@ class SygescaGestionController extends AbstractController
 		$normalizers = [new ObjectNormalizer()];
 		$serializer = new Serializer($normalizers, $encoders);
 		
+		$region = $request->get('region');
+		
 		$annee = $this->_cotisation->annee();
-		$scouts = $this->_scout->getListScout($annee);
+		$scouts = $this->_scout->getListScout($annee,$region);
 		
 		return $this->json($scouts);
 		
 	}
+	
 }

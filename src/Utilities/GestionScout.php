@@ -44,6 +44,7 @@ class GestionScout
 			$lists = []; $i=0;
 			foreach ($cotisations as $cotisation){
 				$lists[$i++]=[
+					'loop_index' => $i,
 					'region' => $cotisation->getMembre()->getGroupe()->getDistrict()->getRegion()->getNom(),
 					'region_slug' => $cotisation->getMembre()->getGroupe()->getDistrict()->getRegion()->getSlug(),
 					'district' => $cotisation->getMembre()->getGroupe()->getDistrict()->getNom(),
@@ -53,6 +54,7 @@ class GestionScout
 					'statut' => $cotisation->getMembre()->getStatut()->getLibelle(),
 					'matricule' => $cotisation->getMembre()->getMatricule(),
 					'carte' => $cotisation->getMembre()->getCarte(),
+					'identite_civile' => strtoupper($cotisation->getMembre()->getNom()).' '.ucwords($cotisation->getMembre()->getPrenoms()),
 					'nom' => $cotisation->getMembre()->getNom(),
 					'prenoms' => $cotisation->getMembre()->getPrenoms(),
 					'date_naissance' => $cotisation->getMembre()->getDateNaissance(),

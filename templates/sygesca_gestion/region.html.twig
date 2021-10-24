@@ -1,10 +1,10 @@
 {% extends 'backend_layout.html.twig' %}
 
-{% block title %}{{parent()}} Liste des membres de l'ASCCI{% endblock %}
+{% block title %}{{parent()}} Liste des membres de la région {{ region.nom }}{% endblock %}
 
 {% block body %}
     <main>
-        <h2 class="dash-title">Liste des adhérants</h2>
+        <h2 class="dash-title">Liste des membres de la région {{ region.nom }}</h2>
 
         <section class="recent">
             <div class="tableau-grid">
@@ -28,7 +28,8 @@
                             <thead>
                             <tr style="text-align:center;">
                                 <th>ID</th>
-                                <th>REGION</th>
+                                <th>DISTRICT</th>
+                                <th>GROUPE</th>
                                 <th>STATUT</th>
                                 <th>NOM & PRENOMS</th>
                                 <th>SEXE</th>
@@ -65,12 +66,13 @@
 
             $('#liste').DataTable( {
                 "ajax": {
-                    url: '{{ absolute_url(path("sygesca_gestion_ajax")) }}',
+                    url: '{{ absolute_url(path("sygesca_gestion_ajax")) }}?region='+ {{ region.id }},
                     dataSrc: ''
                 },
                 "columns": [
                     { "data": "loop_index" },
-                    { "data": "region" },
+                    { "data": "district" },
+                    { "data": "groupe" },
                     { "data": "statut" },
                     { "data": "identite_civile" },
                     { "data": "sexe" },
