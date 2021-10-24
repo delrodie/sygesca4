@@ -4,131 +4,101 @@
 
 {% block body %}
 	<main>
-		<h2 class="dash-title">Overview</h2>
-		<div class="dash-cards">
+		<h2 class="dash-title">Statististiques</h2>
+		<div class="dash-cards dashboard" style="margin-top: 30px;">
 
-			<div class="card-single">
+			<div class="card-single louveteau">
 				<div class="card-body">
-					<span class="ti-briefcase"></span>
+					<span class="ti-user louveteau"></span>
 					<div>
-						<h5>Account Balance</h5>
-						<h4>322</h4>
+						<h5>Louveteaux</h5>
+						<h4>{{ branche.louveteau|number_format(0,'','.') }}</h4>
 					</div>
 				</div>
 				<div class="card-footer">
-					<a href="">View All</a>
+					<a href="">Voir liste</a>
 				</div>
 			</div>
 
-
-			<div class="card-single">
+			<div class="card-single eclaireur">
 				<div class="card-body">
-					<span class="ti-reload"></span>
+					<span class="ti-user"></span>
 					<div>
-						<h5>Account Balance</h5>
-						<h4>322</h4>
+						<h5>Eclaireurs</h5>
+						<h4>{{ branche.eclaireur|number_format(0,'','.') }}</h4>
 					</div>
 				</div>
 				<div class="card-footer">
-					<a href="">View All</a>
+					<a href="">Voir liste</a>
 				</div>
 			</div>
 
-
-			<div class="card-single">
+			<div class="card-single cheminot">
 				<div class="card-body">
-					<span class="ti-check-box"></span>
+					<span class="ti-user"></span>
 					<div>
-						<h5>Account Balance</h5>
-						<h4>322</h4>
+						<h5>Cheminots</h5>
+						<h4>{{ branche.cheminot|number_format(0,'','.') }}</h4>
 					</div>
 				</div>
 				<div class="card-footer">
-					<a href="">View All</a>
+					<a href="">Voir liste</a>
+				</div>
+			</div>
+
+			<div class="card-single routier">
+				<div class="card-body">
+					<span class="ti-user"></span>
+					<div>
+						<h5>Routiers</h5>
+						<h4>{{ branche.routier|number_format(0,'','.') }}</h4>
+					</div>
+				</div>
+				<div class="card-footer">
+					<a href="">Voir liste</a>
 				</div>
 			</div>
 
 		</div>
 
 		<section class="recent">
-			<div class="activity-grid">
+			<div class="tableau-grid">
 				<div class="activity-card">
-					<h3>Recent Activity</h3>
+					<h3>Statistiques par Région</h3>
 
 					<div class="table-responsive">
 						<table>
 							<thead>
 							<tr>
-								<th>Project</th>
-								<th>Start Date</th>
-								<th>End Date</th>
-								<th>Team</th>
-								<th>Action</th>
+								<th>REGION</th>
+								<th>TOTAL</th>
+								<th>JEUNE</th>
+								<th>ADULTE</th>
+								<th>HOMME</th>
+								<th>FEMME</th>
+								<th>LOUVETEAU</th>
+								<th>ECLAIREUR</th>
+								<th>CHEMINOT</th>
+								<th>ROUTIER</th>
 							</tr>
 							</thead>
 							<tbody>
-							<tr>
-								<td>App developpement</td>
-								<td>Test d'immacurite</td>
-								<td>aucun</td>
-								<td>vendred</td>
-								<td><span class="badge warning">Aussi</span></td>
-							</tr>
-							<tr>
-								<td>App developpement</td>
-								<td>Test d'immacurite</td>
-								<td>aucun</td>
-								<td>vendred</td>
-								<td><span class="badge success">Aussi</span></td>
-							</tr>
-							<tr>
-								<td>App developpement</td>
-								<td>Test d'immacurite</td>
-								<td>aucun</td>
-								<td>vendred</td>
-								<td><span class="badge warning">Aussi</span></td>
-							</tr>
+							{% for region in regions %}
+								<tr>
+									<td>{{ region.nom }}</td>
+									<td style="text-align:center;">{{ region.total }}</td>
+									<td style="text-align:center;">{{ region.jeune }}</td>
+									<td style="text-align:center;">{{ region.adulte }}</td>
+									<td style="text-align:center;">{{ region.homme }}</td>
+									<td style="text-align:center;">{{ region.femme }}</td>
+									<td style="text-align:center;">{{ region.louveteau }}</td>
+									<td style="text-align:center;">{{ region.eclaireur }}</td>
+									<td style="text-align:center;">{{ region.cheminot }}</td>
+									<td style="text-align:center;">{{ region.routier }}</td>
+								</tr>
+							{% endfor %}
 							</tbody>
 						</table>
-					</div>
-				</div>
-				<div class="summary">
-					<div class="summary-card">
-						<div class="summary-single">
-							<span class="ti-id-badge"></span>
-							<div>
-								<h5>196</h5>
-								<small>Number of staff</small>
-							</div>
-						</div>
-						<div class="summary-single">
-							<span class="ti-calendar"></span>
-							<div>
-								<h5>196</h5>
-								<small>Number of staff</small>
-							</div>
-						</div>
-						<div class="summary-single">
-							<span class="ti-face-smile"></span>
-							<div>
-								<h5>12</h5>
-								<small>Number of staff</small>
-							</div>
-						</div>
-					</div>
-
-					<div class="bday-card">
-						<div class="bday-img"></div>
-						<div class="bday-info">
-							<h5>Dwaye</h5>
-							<small>Birthday today</small>
-
-							<div>
-								<button>
-									<span class="ti-gift"></span> Whish him
-								</button>
-							</div>
-						</div>
 					</div>
 				</div>
 			</div>

@@ -4,6 +4,10 @@
     --main-color: #153c7a;
     --color-dark: #1D2231;
     --text-grey: #8390A2;
+    --color-louveteau: #f5dd42;
+    --color-eclaireur: green;
+    --color-cheminot: #ed7700;
+    --color-routier: red;
 }
 
 *{
@@ -207,6 +211,12 @@ main{
     grid-template-columns: repeat(3, 1fr);
     grid-column-gap: 3rem;
 }
+
+.dash-cards.dashboard{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-column-gap: 1rem;
+}
 .formulaire form{
     display: flex;
     align-content: center;
@@ -361,6 +371,31 @@ tbody tr:nth-child(even){
     margin: auto 0;
 }
 
+.louveteau .ti-user{
+    color: var(--color-louveteau);
+}
+.card-single.louveteau{
+    border-left: solid 3px var(--color-louveteau);
+}
+.eclaireur .ti-user{
+    color: var(--color-eclaireur);
+}
+.card-single.eclaireur{
+    border-left: solid 3px var(--color-eclaireur);
+}
+.cheminot .ti-user{
+    color: var(--color-cheminot);
+}
+.card-single.cheminot{
+    border-left: solid 3px var(--color-cheminot);
+}
+.routier .ti-user{
+    color: var(--color-routier);
+}
+.card-single.routier{
+    border-left: solid 3px var(--color-routier);
+}
+
 @media only screen and (max-width: 1200px){
 
     .sidebar{
@@ -419,6 +454,9 @@ tbody tr:nth-child(even){
     .dash-cards{
         grid-template-columns: repeat(2, 1fr);
     }
+    .dash-cards.dashboard{
+        grid-template-columns: repeat(2, 1fr);
+    }
     
     .card-single{
         margin-bottom: 1rem;
@@ -435,6 +473,9 @@ tbody tr:nth-child(even){
 
 @media only screen and (max-width: 600px){
     .dash-cards{
+        grid-template-columns: 100%;
+    }
+    .dash-cards.dashboard{
         grid-template-columns: 100%;
     }
 }
