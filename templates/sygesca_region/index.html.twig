@@ -1,0 +1,67 @@
+{% extends 'backend_layout.html.twig' %}
+
+{% block title %}{{ parent() }} Liste des regions{% endblock %}
+
+{% block body %}
+	<main>
+		<h2 class="dash-title">Liste des regions</h2>
+		<section class="recent">
+			<div class="tableau-grid">
+				<div class="activity-card" >
+					<h3>Regions et nombre
+						<span class="ti-printer" onclick="imprimer('impression')"></span>
+					</h3>
+					<div class="table-responsive" id="impression">
+						<table>
+							<thead>
+							<tr style="text-align:center;">
+								<th>#</th>
+								<th>REGION</th>
+								<th>CODE</th>
+								<th>NOMBRE DISTRICT</th>
+								<th>NOMBRE GROUPE</th>
+							</tr>
+							</thead>
+							<tbody>
+							{% for region in regions %}
+								<tr>
+									<td>{{ loop.index}}</td>
+									<td>{{ region.region_nom }}</td>
+									<td style="text-align:center;">{{ region.region_code }}</td>
+									<td style="text-align: center">
+										{% if region.nombre_district == 1 %}
+											-
+										{% else %}
+											{{ region.nombre_district }}
+										{% endif %}
+									</td>
+									<td style="text-align: center">
+										{% if region.nombre_groupe < 3 %} -
+										{% else %} {{ region.nombre_groupe }}
+										{% endif %}
+
+									</td>
+								</tr>
+							{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script>
+        function imprimer(divName) {
+            console.log('impression')
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+	</script>
+{% endblock %}
