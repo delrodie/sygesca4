@@ -63,10 +63,11 @@
 
 		<section class="recent">
 			<div class="tableau-grid">
-				<div class="activity-card">
-					<h3>Statistiques par Région</h3>
-
-					<div class="table-responsive">
+				<div class="activity-card" >
+					<h3>Statistiques par Région 
+						<span class="ti-printer" onclick="imprimer('impression')"></span>
+					</h3>
+					<div class="table-responsive" id="impression">
 						<table>
 							<thead>
 							<tr>
@@ -104,4 +105,18 @@
 			</div>
 		</section>
 	</main>
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script>
+        function imprimer(divName) {
+            console.log('impression')
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+	</script>
 {% endblock %}
