@@ -1,0 +1,10 @@
+{{ form_start(form) }}
+    <div class="form-column-3">
+        <div>{{ form_row(form.region) }}</div>
+        <div>{{ form_row(form.nom) }}</div>
+        <div>
+            {{ form_widget(form) }}
+            <button class="submit">{{ button_label|default('Ajouter') }}</button>
+        </div>
+    </div>
+{{ form_end(form) }}

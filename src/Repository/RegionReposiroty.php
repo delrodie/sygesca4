@@ -19,6 +19,11 @@ class RegionReposiroty extends ServiceEntityRepository
         parent::__construct($registry, Region::class);
     }
 	
+	public function liste()
+	{
+		return $this->createQueryBuilder('r');
+	}
+	
 	public function findListActive()
 	{
 		return $this->createQueryBuilder('r')

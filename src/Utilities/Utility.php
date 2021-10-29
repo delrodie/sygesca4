@@ -43,6 +43,34 @@
 			return $list;
 		}
 		
+		/**
+		 * @param null $region
+		 * @return array
+		 */
+		public function districtList($region = null): array
+		{
+			if (!$region)
+				$districts = $this->_em->getRepository(District::class)->findBy([],['region'=>'ASC']);
+			else
+				$districts = $this->_em->getRepository(District::class)->findBy(['region'=>$region],['region'=>'ASC']);
+			
+			$list=[]; $i=0;
+			foreach ($districts as $district){
+				// Variable
+				$nb_groupe = count($this->_em->getRepository(Groupe::class)->findByRegionOrDistrict(null,$district->getId()));
+				$nb_equipe_groupe = count($this->_em->getRepository(Groupe::class)->listEqupe(null,$district->getId()));
+				$list[$i++]=[
+					'region' => $district->getRegion()->getNom(),
+					'nom' => $district->getNom(),
+					'id' => $district->getId(),
+					'slug' => $district->getSlug(),
+					'nombre_groupe' => $nb_groupe - $nb_equipe_groupe
+				];
+			}
+			
+			return $list;
+		}
+		
 		public function getNombreEntite()
 		{
 			$total_district = count($this->_em->getRepository(District::class)->findListByRegionActive());

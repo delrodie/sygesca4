@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}District{% endblock %}
+
+{% block body %}
+    <h1>District</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ district.id }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ district.nom }}</td>
+            </tr>
+            <tr>
+                <th>Doyenne</th>
+                <td>{{ district.doyenne }}</td>
+            </tr>
+            <tr>
+                <th>Slug</th>
+                <td>{{ district.slug }}</td>
+            </tr>
+            <tr>
+                <th>PubliePar</th>
+                <td>{{ district.publiePar }}</td>
+            </tr>
+            <tr>
+                <th>ModifiePar</th>
+                <td>{{ district.modifiePar }}</td>
+            </tr>
+            <tr>
+                <th>PublieLe</th>
+                <td>{{ district.publieLe ? district.publieLe|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>ModifieLe</th>
+                <td>{{ district.modifieLe ? district.modifieLe|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('sygesca_district_index') }}">back to list</a>
+
+    <a href="{{ path('sygesca_district_edit', {'id': district.id}) }}">edit</a>
+
+    {{ include('sygesca_district/_delete_form.html.twig') }}
+{% endblock %}
