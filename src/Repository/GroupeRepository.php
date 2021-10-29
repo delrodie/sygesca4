@@ -43,6 +43,44 @@ class GroupeRepository extends ServiceEntityRepository
 		
 		return $qb;
 	}
+	
+	public function findListByRegionActive()
+	{
+		return $this->createQueryBuilder('g')
+			->addSelect('d')
+			->addSelect('r')
+			->leftJoin('g.district', 'd')
+			->leftJoin('d.region', 'r')
+			->where('r.id BETWEEN 4 AND 18')
+			->orderBy('r.nom', 'ASC')
+			->addOrderBy('d.nom', 'ASC')
+			->addOrderBy('g.paroisse', 'ASC')
+			->getQuery()->getResult()
+			;
+	}
+	
+	public function listEqupe($region = null, $district = null)
+	{
+		$qb = $this
+			->createQueryBuilder('g')
+			->addSelect('d')
+			->addSelect('r')
+			->leftJoin('g.district', 'd')
+			->leftJoin('d.region', 'r')
+			->where('g.paroisse LIKE :equipe');
+		if ($region){
+			$qb->andWhere('r.id = :region')
+				->setParameter('region', $region);
+		}
+		if ($district){
+			$qb->andWhere('d.id = :district')
+				->setParameter('district', $district);
+		}
+		$query = $qb->setParameter('equipe', '%equipe%')
+				->getQuery()->getResult();;
+		
+		return $query;
+	}
 
     // /**
     //  * @return Groupe[] Returns an array of Groupe objects

@@ -5,6 +5,48 @@
 {% block body %}
 	<main>
 		<h2 class="dash-title">Liste des regions</h2>
+		<div class="dash-cards dashboard" style="margin-top: 30px;">
+
+			<div class="card-single louveteau">
+				<div class="card-body">
+					<span class="ti-user louveteau"></span>
+					<div>
+						<h5>Regions</h5>
+						<h4>{{ entite.region }}</h4>
+					</div>
+				</div>
+				<div class="card-footer">
+					<a href="">Voir liste</a>
+				</div>
+			</div>
+
+			<div class="card-single eclaireur">
+				<div class="card-body">
+					<span class="ti-user"></span>
+					<div>
+						<h5>Districts</h5>
+						<h4>{{ entite.district}}</h4>
+					</div>
+				</div>
+				<div class="card-footer">
+					<a href="">Voir liste</a>
+				</div>
+			</div>
+
+			<div class="card-single cheminot">
+				<div class="card-body">
+					<span class="ti-user"></span>
+					<div>
+						<h5>Groupe</h5>
+						<h4>{{ entite.groupe}}</h4>
+					</div>
+				</div>
+				<div class="card-footer">
+					<a href="">Voir liste</a>
+				</div>
+			</div>
+
+		</div>
 		<section class="recent">
 			<div class="tableau-grid">
 				<div class="activity-card" >
@@ -29,7 +71,7 @@
 									<td>{{ region.region_nom }}</td>
 									<td style="text-align:center;">{{ region.region_code }}</td>
 									<td style="text-align: center">
-										{% if region.nombre_district == 1 %}
+										{% if region.nombre_district < 2 %}
 											-
 										{% else %}
 											{{ region.nombre_district }}

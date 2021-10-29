@@ -18,6 +18,33 @@ class DistrictReposiroty extends ServiceEntityRepository
     {
         parent::__construct($registry, District::class);
     }
+	
+	public function findListByRegionActive()
+	{ //dd($equipes[0]);
+		return $this
+			->createQueryBuilder('d')
+			->addSelect('r')
+			->leftJoin('d.region', 'r')
+			->where('r.id BETWEEN 4 AND 18')
+			->orderBy('r.nom', 'ASC')
+			->addOrderBy('d.nom', 'ASC')
+			->getQuery()->getResult()
+			;
+	}
+	
+	public function listeEquipe($region = null){
+		$query =  $this
+			->createQueryBuilder('d')
+			->where('d.nom LIKE :equipe');
+		if ($region){
+			$query->andWhere('d.region = :region')
+				->setParameter('region', $region);
+		}
+		$result = $query->setParameter('equipe', '%equipe%')
+						->getQuery()->getResult();
+				
+		return $result;
+	}
 
     // /**
     //  * @return District[] Returns an array of District objects

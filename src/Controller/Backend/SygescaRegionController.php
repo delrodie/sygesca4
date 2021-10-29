@@ -30,6 +30,7 @@ class SygescaRegionController extends AbstractController
 		//dd();
         return $this->render('sygesca_region/index.html.twig', [
             'regions' => $this->utility->regionList(),
+	        'entite' => $this->utility->getNombreEntite()
         ]);
     }
 }
