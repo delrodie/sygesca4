@@ -1,0 +1,323 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} Inscription d'un nouveau membre'{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Formulaire d'adhesion</h1>
+        <form action="{{ absolute_url(path('adhesion_nouveau_new')) }}" method="post" id="nouveau" name="nouveau">
+            <div class="row">
+                <div class="column">
+                    <label for="scout_nom">Nom</label>
+                    <input type="text" id="scout_nom" name="scout_nom" placeholder="Nom">
+                </div>
+                <div class="column">
+                    <label for="scout_prenom">Prenoms</label>
+                    <input type="text" id="scout_prenom" placeholder="Prenoms" name="scout_prenoms">
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label for="scout_date_naissance">Date de naissance</label>
+                    <input type="date" id="scout_date_naissance" name="scout_date_naissance" placeholder="Date de naissance">
+                </div>
+                <div class="column">
+                    <label for="scout_lieu_naissance">Lieu de naissance</label>
+                    <input type="text" id="scout_lieu_naissance" name="scout_lieu_naissance" placeholder="Lieu de naissance">
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label for="scout_sexe">Sexe</label>
+                    <select name="scout_sexe" id="scout_sexe">
+                        <option value="">-- Selectionne ton sexe ---</option>
+                        <option value="HOMME">Homme</option>
+                        <option value="FEMME">Femme</option>
+                    </select>
+                </div>
+                <div class="column">
+                    <label for="scout_contact">Numero de telephone</label>
+                    <input type="tel" id="scout_contact" name="scout_contact" placeholder="Numero de telephone" maxlength="10" minlength="10" size="10">
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label for="scout_urgence">En cas d'urgence</label>
+                    <select name="scout_urgence" id="scout_urgence">
+                        <option value="">-- En cas d'urgence--</option>
+                        <option value="PERE">PERE</option>
+                        <option value="MERE">MERE</option>
+                        <option value="AUTRE">AUTRE</option>
+                    </select>
+                </div>
+                <div class="column">
+                    <label for="scout_contact_parent">Contact parent</label>
+                    <input type="tel" id="scout_contact_parent" name="scout_contact_parent" placeholder="Contact parent">
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label for="scout_fonction">Fonction</label>
+                    <select name="scout_fonction" id="scout_fonction" class="select2" required>
+                        <option value="">-- selectionnez --</option>
+                        {% for fonction in fonctions %}
+                            <option value="{{ fonction.id }}">{{ fonction.libelle }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div id="divBranche" class="column">
+                    <label for="">Branche</label>
+                    <select name="scout_branche" id="scout_branche" class="">
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label for="scout_region">Region</label>
+                    <select name="scout_region" id="scout_region" class="select2" required>
+                        <option value="">-- selectionnez --</option>
+                        {% for region in regions %}
+                            <option value="{{ region.id }}">{{ region.nom }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="column">
+                    <label for="scout_district">District</label>
+                    <select name="scout_district" id="scout_district" class="select2" required>
+                        <option value="">-- selectionnez --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="column">
+                    <label for="scout_groupe">Groupe</label>
+                    <select name="scout_groupe" id="scout_groupe" class="select2" required>
+                        <option value="">-- selectionnez --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <span style="color: red">Droit d'adhésion: <strong id="montant_adhesion"></strong></span>
+            </div>
+            <div class="row">
+                <div class="column button">
+                    <input type="hidden" name="scout_id" value="0">
+                    <button>Valider</button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
+{% block stylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    {{ parent() }}
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script charset="utf-8" src="https://www.cinetpay.com/cdn/seamless_sdk/latest/cinetpay.prod.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2();
+
+            // Gestion du select branche
+            $('#divBranche').fadeOut()
+            $('#divBranche').children('#scout_branche').prop('disabled', 'disabled')
+            $('#scout_fonction').change(function () {
+                let selectedFonction = $('#scout_fonction').val()
+                if (selectedFonction == 5 || selectedFonction == 6 || selectedFonction== 7){
+                    $('#divBranche').fadeIn();
+                    $('#divBranche').children('#scout_branche').prop('disabled', false)
+                    var branche = {
+                        "":"",
+                        "LOUVETAU":"LOUVETEAU",
+                        "ECLAIREUR":"ECLAIREUR",
+                        "CHEMINOT":"CHEMINOT",
+                        "ROUTIER":"ROUTIER"
+                    }
+                    $.each(branche, function (key, value) {
+                        $('#scout_branche').append($("<option></option>")
+                                .attr("value", key)
+                                .text(value)
+                        );
+                    })
+                    regionList();
+                }else if(selectedFonction == 26 || selectedFonction == 27 || selectedFonction == 30){
+                    gestionEquipeNationale()
+                }
+                else{
+                    $('#divBranche').fadeOut()
+                    $('#divBranche').children('#scout_branche').prop('disabled','disabled')
+                    $('#adhesion_branche').children().remove()
+                    regionList();
+                }
+            })
+
+            // Gestion des fonction
+            $('#scout_fonction').on('change',function () {
+                let fonctionId = $(this).val()
+                $.get("{{ absolute_url(path('requete_ajax_formulaire')) }}", {field : "fonction", value: fonctionId})
+                        .done(function(data) {
+                            if(data) {
+                                $('#montant_adhesion').empty()
+                                $('#montant_adhesion').append(data+" FCFA")
+                            }
+                        })
+            })
+
+            // Gestion des district
+            $('#scout_region').on('change', function () {
+                let regionId = $(this).val()
+                $.get("{{ absolute_url(path('requete_ajax_formulaire')) }}", {field: "region", value: regionId})
+                        .done(function (data) {
+                            if (data){
+                                $('#scout_district').empty();
+                                $('#scout_district').append("<option value=''>-</option>")
+                                for (let i = 0; i < data.length; i++){
+                                    const item = data[i]
+                                    $('#scout_district').append(
+                                            "<option value="+item.id+">"+item.nom+"</option>"
+                                    )
+                                }
+                            }
+                        })
+            })
+
+            // Gestion des groupes
+            $('#scout_district').on('change', function () {
+                let districtId = $(this).val()
+                $.get("{{ absolute_url(path('requete_ajax_formulaire')) }}", {field: "district",value: districtId})
+                        .done(function (data) {
+                            if (data){
+                                $('#scout_groupe').empty();
+                                $('#scout_groupe').append("<option value=''>-</option>")
+                                for (let i = 0; i < data.length; i++){
+                                    const item = data[i]
+                                    $('#scout_groupe').append(
+                                            "<option value="+item.id+">"+item.paroisse+"</option>"
+                                    )
+                                }
+                            }
+                        })
+            })
+
+            // Soumission
+            $("#nouveau").submit(function (event) {
+                console.log('cliquez')
+                event.preventDefault();
+                var post_url = $(this).attr("action");
+                var request_method = $(this).attr("method");
+                var form_data = $(this).serialize();
+                $.ajax({
+                    url: post_url,
+                    type: request_method,
+                    data: form_data,
+                    dataType: 'json',
+                }).done(function (response) {
+                    console.log(response)
+                    if (response.status === true){
+                        CinetPay.setConfig({
+                            apikey: '18714242495c8ba3f4cf6068.77597603',
+                            site_id: 422630,
+                            notify_url: '{{ absolute_url(path('cinetpay_notification')) }}'
+                        });
+                        CinetPay.setSignatureData({
+                            amount: response.amount,
+                            trans_id: response.id_transaction,
+                            currency: 'CFA',
+                            designation: 'Paiement ' + response.amount + 'FCFA',
+                            customer_id: response.customer_id,
+                            customer_name: response.customer_name,
+                            customer_surname: response.customer_surname
+                        });
+                        CinetPay.getSignature();
+                        CinetPay.on('signatureCreated', function (token) {});
+
+                        CinetPay.on('paymentPending', function (e) {});
+                        CinetPay.on('error', function (e) {});
+                        CinetPay.on('paymentSuccessfull', function (paymentInfo) {
+                            if (typeof paymentInfo.lastTime != 'undefined') {
+                                if (paymentInfo.cpm_result == '00') {
+                                    Swal.fire({
+                                        type: 'success',
+                                        title: 'Félicitation!',
+                                        text: 'votre inscription a ete effectuee avec succes. Voulez vous imprimez votre recu ?',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Oui',
+                                        cancelButtonText: 'Non, prochainement',
+                                    }).then((result) => {
+                                        if (result.value) {
+                                            console.log(result); //dump();
+                                            window.location = "{{ absolute_url(path('print_badge')) }}";
+                                        } else {
+                                            window.location.reload();
+                                        }
+                                    });
+                                }else{
+                                    //window.location = "{{ absolute_url(path('print_badge')) }}";
+                                    Swal.fire({
+                                        type: 'error',
+                                        title: 'Une erreur sur votre inscription.',
+                                        text: 'Veuillez reprendre.',
+                                        confirmButtonText: 'Reprendre',
+                                        footer: response.id_transaction,
+                                    }).then((result) =>{
+                                        if (result.isConfirmed){
+                                            window.location.reload();
+                                        }
+                                    })
+
+                                }
+                            }
+                        });
+                    }else{
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Vous êtes déjà inscrit',
+                            text:  "Si vous pensez que c'est une erreur, veuillez contacter donc le bureau national."
+                        })
+                    }
+                })
+            });
+
+            /**
+             * Fonction diverses correspondantes à la selection de la fonction et des regions
+             */
+
+            function regionList() {
+                $('#scout_region').empty();
+                $('#scout_district').empty();
+                $('#scout_groupe').empty();
+                $.get("{{ absolute_url(path('requete_ajax_formulaire')) }}", {field: "regionIntialisation", value: null})
+                        .done(function (data) {
+                            if (data){
+                                $('#scout_region').empty();
+                                $('#scout_region').append("<option value=''>-</option>")
+                                for (let i = 0; i < data.length; i++){
+                                    const item = data[i]
+                                    $('#scout_region').append(
+                                            "<option value="+item.id+">"+item.nom+"</option>"
+                                    )
+                                }
+                            }
+                        })
+            }
+
+            function gestionEquipeNationale() {
+                $('#scout_region').empty(); $('#scout_district').empty(); $('#scout_groupe').empty();
+                $('#scout_region').append(
+                        "<option value="+1+">EQUIPE NATIONALE</option>"
+                )
+                $('#scout_district').append(
+                        "<option value="+1+">EQUIPE NATIONALE</option>"
+                )
+                $('#scout_groupe').append(
+                        "<option value="+1+">EQUIPE NATIONALE</option>"
+                )
+            }
+
+        });
+    </script>
+{% endblock %}
