@@ -162,7 +162,7 @@ class CinetpayController extends AbstractController
 			
 			// Nombre de scout
 			$compteur = $this->getDoctrine()->getRepository(Compteur::class)->findOneBy([],['id'=>'DESC'],1);
-			if (count($compteur) === 0){
+			if (!$compteur){
 				$nombre = count($this->getDoctrine()->getRepository(Scout::class, 'sygesca')->findAll()) + 1;
 				$compteur = new Compteur();
 				$compteur->setNombre((int) $nombre);
