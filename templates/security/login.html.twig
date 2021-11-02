@@ -8,12 +8,13 @@
     {% if error %}
         <div class="alert danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
-
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
-        </div>
-    {% endif %}
+    {% for label, messages in app.flashes(['success', 'danger']) %}
+        {% for message in messages %}
+            <div class="flash-{{ label }}" style="margin-bottom: 25px;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
 
     <div class="txt_field">
         <input type="text" value="{{ last_username }}" name="username" id="inputUsername" autocomplete="username" required autofocus>
@@ -44,7 +45,7 @@
 
 
     <div class="pass"></div>
-    <input type="submit" value="Login">
+    <input type="submit" value="Connexion">
     <div class="signup_link">.</div>
 </form>
 
