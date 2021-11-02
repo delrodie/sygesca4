@@ -179,7 +179,7 @@ class GestionScout
 				'identite_civile' => $scout->getNom().' '.$scout->getPrenoms(),
 				'loop_index' => $i
 			];
-		}
+		} //dd($scouts);
 		 return $list;
 	}
 	/**

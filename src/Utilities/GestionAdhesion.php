@@ -82,7 +82,7 @@
 				$am = $this->arrondiSuperieur($am, 5);
 				
 				$session = $this->requestStack->getSession();
-				$session->set('matriculeTest', $scout->getMatricule());
+				$session->set('matricule', $scout->getMatricule());
 				
 				$message = [
 					'id_transaction' => $id_transaction,
