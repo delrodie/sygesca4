@@ -96,6 +96,41 @@ class SygescaGestionController extends AbstractController
 		
 	}
 	
+	/**
+	 * @Route("/encours/", name="sygesca_gestion_nonvalid", methods={"GET","POST"})
+	 */
+	public function nonvalid(Request $request)
+	{
+		$this->_scout->getListNonValid();
+		return $this->render('sygesca_gestion/nonvalid.html.twig',[
+			'regions' => $this->regionReposiroty->findAll()
+		]);
+		
+	}
+	/**
+	 * @Route("/encours/ajax", name="sygesca_gestion_nonvalid_ajax", methods={"GET","POSt"})
+	 */
+	public function nonvalidAjax(Request $request)
+	{
+		//Initialisation
+		$encoders = [new XmlEncoder(), new JsonEncoder()];
+		$normalizers = [new ObjectNormalizer()];
+		$serializer = new Serializer($normalizers, $encoders);
+		
+		$region = $request->get('region');
+		$district = $request->get('district');
+		
+		$scouts = $this->_scout->getListNonValid($region);
+		
+		return $this->json($scouts);
+		
+	}
+	
+	/**
+	 * @param $compte
+	 * @param $districtID
+	 * @return array
+	 */
 	protected function region($compte, $districtID)
 	{
 		$region = $this->getDoctrine()->getRepository(Region::class)->findOneBy(['slug'=>$compte->getRegion()->getSlug()]);

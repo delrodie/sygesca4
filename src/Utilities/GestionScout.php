@@ -2,12 +2,14 @@
 
 namespace App\Utilities;
 
+use App\Entity\Adherant;
 use App\Entity\Cotisation;
 use App\Entity\Membre;
 use App\Entity\Sygesca3\Fonctions;
 use App\Entity\Sygesca3\Region;
 use App\Entity\Sygesca3\Scout;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Validator\Constraints\Date;
 
 class GestionScout
 {
@@ -152,6 +154,34 @@ class GestionScout
 		return $branche;
 	}
 	
+	public function getListNonValid($region=null): array
+	{
+		$periode = $this->anneeEncours(); //dd($periode);
+		$scouts  = $this->entityManager->getRepository(Adherant::class)->findListNonValid($region,$periode['debut'],$periode['fin']);
+		$list=[];$i=0;
+		foreach ($scouts as $scout){
+			$dateTime = $scout->getCreatedAt();
+			$list[$i++]=[
+				'matricule' => $scout->getMatricule(),
+				'nom' => $scout->getNom(),
+				'prenoms' => $scout->getPrenoms(),
+				'date_naissance' => $scout->getDateNaissance(),
+				'lieu_naissance' => $scout->getLieuNaissance(),
+				'sexe' => $scout->getSexe(),
+				'contact' => $scout->getContact(),
+				'fonction' => $scout->getFonction(),
+				'slug' => $scout->getSlug(),
+				'id_transaction' => '<a href="https://adhesion.scoutascci.org/cinetpay/notify/?cpm_trans_id='.$scout->getIdTransaction().'" target="_blank">'.$scout->getIdTransaction().'</a>',
+				'createdAt' => $dateTime->format('Y-m-d h:i:s'),
+				'groupe' => $scout->getGroupe()->getParoisse(),
+				'district' => $scout->getGroupe()->getDistrict()->getNom(),
+				'region' => $scout->getGroupe()->getDistrict()->getRegion()->getNom(),
+				'identite_civile' => $scout->getNom().' '.$scout->getPrenoms(),
+				'loop_index' => $i
+			];
+		}
+		 return $list;
+	}
 	/**
 	 * Generation du matricule
 	 *
@@ -228,6 +258,26 @@ class GestionScout
 		$alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		
 		return $alphabet[rand(0,25)];
+	}
+	
+	/**
+	 * @return string[]
+	 */
+	protected function anneeEncours(): array
+	{
+		$mois_encore = Date('m', time());
+		if ($mois_encore > 9){
+			$annee_debut = Date('Y', time());
+			$annee_fin = Date('Y', time()) +1;
+		}else{
+			$annee_debut = Date('Y', time()) - 1;
+			$annee_fin = Date('Y', time());
+		}
+		$periode = [
+			'debut' => $annee_debut.'-09-01 00:00:00',
+			'fin' => $annee_fin.'-08-31 23:59:59',
+		];
+		return $periode;
 	}
 
 }

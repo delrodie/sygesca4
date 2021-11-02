@@ -18,6 +18,28 @@ class AdherantRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Adherant::class);
     }
+	
+	public function findListNonValid($region=null, $date1, $date2)
+	{
+		return $this
+			->createQueryBuilder('a')
+			->addSelect('g')
+			->addSelect('d')
+			->addSelect('r')
+			->leftJoin('a.groupe', 'g')
+			->leftJoin('g.district', 'd')
+			->leftJoin('d.region', 'r')
+			->where('a.createdAt BETWEEN :date1 AND :date2')
+			->andWhere('a.statusPaiement = :status')
+			->orderBy('a.createdAt', "DESC")
+			->setParameters([
+				'date1' => $date1,
+				'date2' => $date2,
+				'status' => 'UNKNOW'
+			])
+			->getQuery()->getResult()
+			;
+	}
 
     // /**
     //  * @return Adherant[] Returns an array of Adherant objects
