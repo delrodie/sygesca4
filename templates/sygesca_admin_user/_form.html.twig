@@ -1,0 +1,26 @@
+{{ form_start(form) }}
+    <div class="form-column-3">
+        {{ form_row(form.username) }}
+        {{ form_row(form.email) }}
+        {{ form_row(form.password) }}
+    </div>
+    <div class="input-checkbox" style="margin-top: 15px;">
+            {{ form_widget(form.roles.0) }}
+    {{ form_label(form.roles.0) }}
+    {{ form_widget(form.roles.1) }}
+    {{ form_label(form.roles.1) }}
+    {{ form_widget(form.roles.2) }}
+    {{ form_label(form.roles.2) }}
+    {{ form_widget(form.roles.3) }}
+    {{ form_label(form.roles.3) }}
+    {{ form_widget(form.roles.4) }}
+    {{ form_label(form.roles.4) }}
+    {{ form_widget(form.roles.5) }}
+    {{ form_label(form.roles.5) }}
+    </div>
+    {{ form_widget(form) }}
+    <div style="text-align:right;">
+        <button class="submit">{{ button_label|default('Enregistrer') }}</button>
+    </div>
+
+{{ form_end(form) }}

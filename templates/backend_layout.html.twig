@@ -62,22 +62,28 @@
                             <span class="ti-user"></span> <span>Scouts</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ absolute_url(path('sygesca_finance_liste')) }}" title="Finance">
-                            <span class="ti-money"></span> <span>Finance</span>
-                        </a>
-                    </li>
+                    {% if is_granted('ROLE_FINANCE') %}
+                        <li>
+                            <a href="{{ absolute_url(path('sygesca_finance_liste')) }}" title="Finance">
+                                <span class="ti-money"></span> <span>Finance</span>
+                            </a>
+                        </li>
+                    {% endif %}
+
                     <hr class="administrateur">
                     <!--<li>
                         <a href="">
                             <span class="ti-target"></span> <span>Objectif</span>
                         </a>
                     </li>-->
-                    <li>
-                        <a href="{{ absolute_url(path('sygesca_region_index')) }}">
-                            <span class="ti-map-alt"></span> <span>Region</span>
-                        </a>
-                    </li>
+                    {% if is_granted('ROLE_NATION') %}
+                        <li>
+                            <a href="{{ absolute_url(path('sygesca_region_index')) }}">
+                                <span class="ti-map-alt"></span> <span>Region</span>
+                            </a>
+                        </li>
+                    {% endif %}
+
                     <li>
                         <a href="{{ absolute_url(path('sygesca_district_index')) }}">
                             <span class="ti-map"></span> <span>District</span>
@@ -97,13 +103,21 @@
                         <a href="">
                             <span class="ti-pin-alt"></span> <span>Statut</span>
                         </a>
-                    </li>
-                    <hr class="securite">
-                    <li>
-                        <a href="">
-                            <span class="ti-settings"></span> <span>Account</span>
-                        </a>
                     </li>-->
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <hr class="securite">
+                        <li>
+                            <a href="{{ absolute_url(path('sygesca_admin_user_index')) }}">
+                                <span class="ti-lock"></span> <span>Utilisateurs</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ absolute_url(path('sygesca_admin_user_index')) }}">
+                                <span class="ti-settings"></span> <span>Compte</span>
+                            </a>
+                        </li>
+                    {% endif %}
+
                 </ul>
             </div>
         </div>

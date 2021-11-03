@@ -21,6 +21,22 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         parent::__construct($registry, User::class);
     }
+	
+	/**
+	 * Liste des utilsateurs sans Delrodie
+	 *
+	 * @return int|mixed|string
+	 */
+	public function findWithoutDelrodie()
+	{
+		return $this
+			->createQueryBuilder('u')
+			->where('u.username <> :user')
+			->orderBy('u.username','ASC')
+			->setParameter('user', 'delrodie')
+			->getQuery()->getResult()
+			;
+	}
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.

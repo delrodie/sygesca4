@@ -1,65 +1,65 @@
 {% extends 'backend_layout.html.twig' %}
 
-{% block title %}{{ parent() }} Gestion des districts{% endblock %}
+{% block title %}{{ parent() }} Gestion des utilisateurs{% endblock %}
 
 {% block body %}
     <main>
-        <h2 class="dash-title">Liste des districts</h2>
-
-        <section class="recent">
-            <!--<div class="tableau-grid">
+        <h2 class="dash-title">Liste des utilisateurs</h2>
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+            <section class="section-formulaire">
+                {% for label, messages in app.flashes(['success', 'danger']) %}
+                    {% for message in messages %}
+                        <div class="flash-{{ label }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                <div class="tableau-grid">
                     <div class="activity-card">
                         <div class="card-body">
-                            <h3>Formulaire</h3>
-                            <div class="form-district">
-                                {{ include('sygesca_district/_form.html.twig') }}
+                            <div class="form">
+                                {{ include('sygesca_admin_user/_form.html.twig', {'button_label': 'Modifier'}) }}
+                                {{ include('sygesca_admin_user/_delete_form.html.twig') }}
                             </div>
                         </div>
                     </div>
-            </div>-->
+                </div>
+            </section>
+        {% endif %}
+
+        <section class="recent">
+
             <div class="tableau-grid">
                 <div class="activity-card">
-                    <div class="formulaire">
-                        <div class="card-body">
-                            <form action="" onchange="this.submit()" id="form_region">
-                                <label for="search_region">Region</label>
-                                <select name="region" id="search_region" class="select2">
-                                    <option value="">-- Selectionnez la région --</option>
-                                    {% for region in regions %}
-                                        <option value="{{ region.id }}">{{ region.nom }}</option>
-                                    {% endfor %}
-                                </select>
-                            </form>
-                        </div>
-                    </div>
 
                     <div class="table-district">
                         <table id="liste" class="compact display" style="width: 95%;">
                             <thead>
                             <tr style=" text-align:center;">
                                 <th>ID</th>
-                                <th>REGION</th>
-                                <th>DISTRICT</th>
-                                <th>NOMBRE GROUPE</th>
+                                <th>LOGIN</th>
+                                <th>EMAIL</th>
+                                <th>ROLE</th>
+                                <th>CONNEXION</th>
+                                <th>DATE</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% for district in districts %}
-                                {% if district.nombre_groupe == 0 %}
-                                    <tr style="background-color:#8eb3ec; color: white">
-                                        <td>{{ loop.index }}</td>
-                                        <td>{{ district.region }}</td>
-                                        <td>{{ district.nom }}</td>
-                                        <td>-</td>
-                                    </tr>
-                                {% else %}
-                                    <tr>
-                                        <td>{{ loop.index }}</td>
-                                        <td>{{ district.region }}</td>
-                                        <td>{{ district.nom }}</td>
-                                        <td>{{ district.nombre_groupe }}</td>
-                                    </tr>
-                                {% endif %}
+                            {% for user in users %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ user.userIdentifier }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td style="text-align:center;">
+                                        {% if user.roles[1] %}
+                                            {{ user_role(user.roles[1]) }}
+                                        {% else %}
+                                            {{ user_role(user.roles[0]) }}
+                                        {% endif %}
+                                    </td>
+                                    <td style="text-align:center;">{{ user.loginCount ? user.loginCount : '-' }}</td>
+                                    <td style="text-align:center;">{{ user.lastConnection ? user.lastConnection : '-' }}</td>
+                                </tr>
                             {% endfor %}
                             </tbody>
                         </table>
@@ -102,3 +102,6 @@
         } );
     </script>
 {% endblock %}
+
+
+

@@ -53,18 +53,30 @@ button:hover{
     right: 0;
     float: right;
 }
-button.submit{
+button.submit,
+button.delete{
     border: none;
-    padding: 5px 5px;
-    background: var(--main-color);
-    color: #fff;
+    padding: 10px 15px;
     border-radius: 5px;
     justify-content: center;
     align-items: center;
 }
+button.submit{
+    background: var(--main-color);
+    color: #fff;
+}
+button.delete{
+    background: #bb0303;
+    color: #fff;
+}
 button.submit:hover{
     border: none;
     background: linear-gradient(-130deg, #9dbef5, blue);
+    cursor: pointer;
+}
+button.delete:hover{
+    border: none;
+    background: linear-gradient(-130deg, #c25a5a, #bb0303);
     cursor: pointer;
 }
 .form-column-1{
@@ -82,7 +94,7 @@ button.submit:hover{
     grid-column-gap: 1rem;
 }
 .form-column-3 div{
-    border: 1px solid #f00;
+    border: 0;
 }
 .form-district form{
     display: flex;
@@ -96,4 +108,24 @@ button.submit:hover{
     display: flex;
     padding-right: 20px;
     margin: auto 0;
+}
+.form{
+    width: 100%;
+}
+.form button{
+    margin: 20px auto;
+}
+.input-checkbox{
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+}
+.input-checkbox input{
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+.input-checkbox label{
+    float: right;
 }

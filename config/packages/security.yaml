@@ -1,4 +1,11 @@
 security:
+    role_hierarchy:
+        ROLE_DISTRICT: ROLE_USER
+        ROLE_REGION: ROLE_DISTRICT
+        ROLE_NATION: ROLE_REGION
+        ROLE_FINANCE: ROLE_NATION
+        ROLE_ADMIN: ROLE_FINANCE
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
     # https://symfony.com/doc/current/security/authenticator_manager.html
     enable_authenticator_manager: true
     # https://symfony.com/doc/current/security.html#c-hashing-passwords
@@ -37,4 +44,5 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/sygesca, roles: ROLE_USER }
+        - { path: ^/sygesca/admin, roles: ROLE_SUPER_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
