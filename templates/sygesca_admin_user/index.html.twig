@@ -60,7 +60,7 @@
                                         {% endif %}
                                     </td>
                                     <td style="text-align:center;">{{ user.loginCount ? user.loginCount : '-' }}</td>
-                                    <td style="text-align:center;">{{ user.lastConnection ? user.lastConnection : '-' }}</td>
+                                    <td style="text-align:center;">{{ user.lastConnection ? user.lastConnection|date('Y-m-d H:i:s') : '-' }}</td>
                                 </tr>
                             {% endfor %}
                             </tbody>

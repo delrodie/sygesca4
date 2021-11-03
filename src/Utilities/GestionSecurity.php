@@ -46,4 +46,19 @@
 			
 			return $result;
 		}
+		
+		public function connexion(): bool
+		{
+			$user = $this->_em->getRepository(User::class)->findOneBy(['username'=>$this->_security->getUser()->getUserIdentifier()]);
+			
+			// Definition des variable
+			$nombre_conneion = (int)$user->getLoginCount();
+			
+			$user->setLoginCount($nombre_conneion + 1);
+			$user->setLastConnection(new \DateTime()); //dd($user);
+			
+			$this->_em->flush();
+			
+			return true;
+		}
 	}
