@@ -1,0 +1,11 @@
+{{ form_start(form) }}
+    <div class="form-column-3">
+        {{ form_row(form.region) }}
+        {{ form_row(form.user) }}
+    </div>
+    <div style="text-align:right;">
+        {{ form_widget(form) }}
+        <button class="submit">{{ button_label|default('Enregistrer') }}</button>
+    </div>
+
+{{ form_end(form) }}
