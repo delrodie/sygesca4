@@ -3,6 +3,7 @@
 	namespace App\Utilities;
 	
 	use App\Entity\Cotisation;
+	use App\Entity\Sygesca3\District;
 	use App\Entity\Sygesca3\Region;
 	use App\Repository\CotisationRepository;
 	use Doctrine\ORM\EntityManagerInterface;
@@ -48,21 +49,26 @@
 		
 		public function statistiquesRegion($annee, $region=null, $district=null)
 		{
-			$regions = $this->_em->getRepository(Region::class)->findListActive();
+			if ($region)
+				$resultats = $this->_em->getRepository(District::class)->findBy(['region'=>$region],['nom'=>"ASC"]);
+			elseif($district)
+				$resultats=[];
+			else
+				$resultats = $this->_em->getRepository(Region::class)->findListActive();
 			
 			$lists=[];$i=0;
-			foreach($regions as $region){
+			foreach($resultats as $resultat){
 				$lists[$i++] = [
-					'nom' => $region->getNom(),
-					'total' => count($this->cotisationRepository->findList($annee,$region->getId())),
-					'jeune' => count($this->cotisationRepository->findByStatut($annee,'Jeune',$region->getId())),
-					'adulte' => count($this->cotisationRepository->findByStatut($annee,'Adulte',$region->getId())),
-					'homme' => count($this->cotisationRepository->findBySexe($annee,'HOMME',$region->getId())),
-					'femme' => count($this->cotisationRepository->findBySexe($annee,'FEMME',$region->getId())),
-					'louveteau' => count($this->cotisationRepository->findByBranche($annee,'Jeune','LOUVETEAU',$region->getId())),
-					'eclaireur' => count($this->cotisationRepository->findByBranche($annee,'Jeune','ECLAIREUR',$region->getId())),
-					'cheminot' => count($this->cotisationRepository->findByBranche($annee,'Jeune','CHEMINOT',$region->getId())),
-					'routier' => count($this->cotisationRepository->findByBranche($annee,'Jeune','ROUTIER',$region->getId())),
+					'nom' => $resultat->getNom(),
+					'total' => count($this->cotisationRepository->findList($annee,null, $resultat->getId())),
+					'jeune' => count($this->cotisationRepository->findByStatut($annee,'Jeune',null, $resultat->getId())),
+					'adulte' => count($this->cotisationRepository->findByStatut($annee,'Adulte',null, $resultat->getId())),
+					'homme' => count($this->cotisationRepository->findBySexe($annee,'HOMME',null, $resultat->getId())),
+					'femme' => count($this->cotisationRepository->findBySexe($annee,'FEMME',null, $resultat->getId())),
+					'louveteau' => count($this->cotisationRepository->findByBranche($annee,'Jeune','LOUVETEAU',null, $resultat->getId())),
+					'eclaireur' => count($this->cotisationRepository->findByBranche($annee,'Jeune','ECLAIREUR',null, $resultat->getId())),
+					'cheminot' => count($this->cotisationRepository->findByBranche($annee,'Jeune','CHEMINOT',null, $resultat->getId())),
+					'routier' => count($this->cotisationRepository->findByBranche($annee,'Jeune','ROUTIER',null, $resultat->getId())),
 				];
 			}
 			

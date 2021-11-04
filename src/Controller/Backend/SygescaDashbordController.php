@@ -37,7 +37,11 @@ class SygescaDashbordController extends AbstractController
 			if ($role[1] === 'ROLE_REGION'){
 				$compte = $this->getDoctrine()->getRepository(Compte::class)->findOneBy(['user'=>$user->getId()]);
 				
-				return $this->redirectToRoute('sygesca_gestion_region',['regionSlug'=>$compte->getRegion()->getSlug()]);
+				//return $this->redirectToRoute('sygesca_gestion_region',['regionSlug'=>$compte->getRegion()->getSlug()]);
+				return $this->render('sygesca_dashbord/region.html.twig',[
+					'regions' => $this->_cotisation->statistiquesRegion($annee, $compte->getRegion()->getId()),
+					'branche' => $this->_scout->branche($annee,'Jeune',null,$compte->getRegion()->getId())
+				]);
 			}
 	    }
 		

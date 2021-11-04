@@ -1,0 +1,142 @@
+{% extends 'backend_layout.html.twig' %}
+
+{% block title %}{{ parent() }} Tableau de bord{% endblock %}
+
+{% block body %}
+	<main>
+		<h2 class="dash-title">Statististiques</h2>
+		<div class="dash-cards dashboard" style="margin-top: 30px;">
+
+			<div class="card-single louveteau">
+				<div class="card-body">
+					<span class="ti-user louveteau"></span>
+					<div>
+						<h5>Louveteaux</h5>
+						<h4>{{ branche.louveteau|number_format(0,'','.') }}</h4>
+					</div>
+				</div>
+				<div class="card-footer">
+					<a href="">Voir liste</a>
+				</div>
+			</div>
+
+			<div class="card-single eclaireur">
+				<div class="card-body">
+					<span class="ti-user"></span>
+					<div>
+						<h5>Eclaireurs</h5>
+						<h4>{{ branche.eclaireur|number_format(0,'','.') }}</h4>
+					</div>
+				</div>
+				<div class="card-footer">
+					<a href="">Voir liste</a>
+				</div>
+			</div>
+
+			<div class="card-single cheminot">
+				<div class="card-body">
+					<span class="ti-user"></span>
+					<div>
+						<h5>Cheminots</h5>
+						<h4>{{ branche.cheminot|number_format(0,'','.') }}</h4>
+					</div>
+				</div>
+				<div class="card-footer">
+					<a href="">Voir liste</a>
+				</div>
+			</div>
+
+			<div class="card-single routier">
+				<div class="card-body">
+					<span class="ti-user"></span>
+					<div>
+						<h5>Routiers</h5>
+						<h4>{{ branche.routier|number_format(0,'','.') }}</h4>
+					</div>
+				</div>
+				<div class="card-footer">
+					<a href="">Voir liste</a>
+				</div>
+			</div>
+
+		</div>
+
+		<section class="recent">
+			<div class="tableau-grid">
+				<div class="activity-card" >
+					<h3>Statistiques par Région 
+						<span class="ti-printer" onclick="imprimer('impression')"></span>
+					</h3>
+					<div class="table-responsive" id="impression">
+						<table>
+							<thead>
+							<tr>
+								<th>REGION</th>
+								<th>TOTAL</th>
+								<th>JEUNE</th>
+								<th>ADULTE</th>
+								<th>HOMME</th>
+								<th>FEMME</th>
+								<th>LOUVETEAU</th>
+								<th>ECLAIREUR</th>
+								<th>CHEMINOT</th>
+								<th>ROUTIER</th>
+							</tr>
+							</thead>
+							<tbody>
+							{% set tot=0 %}{% set jeune=0 %}{% set adulte=0 %}{% set homme=0 %}{% set femme=0 %}
+							{% set louveteau=0 %}{% set eclaireur=0 %}{% set cheminot=0 %}{% set routier=0 %}
+							{% for region in regions %}
+								<tr>
+									<td>{{ region.nom }}</td>
+									<td style="text-align:center;">{{ region.total }}</td>
+									<td style="text-align:center;">{{ region.jeune }}</td>
+									<td style="text-align:center;">{{ region.adulte }}</td>
+									<td style="text-align:center;">{{ region.homme }}</td>
+									<td style="text-align:center;">{{ region.femme }}</td>
+									<td style="text-align:center;">{{ region.louveteau }}</td>
+									<td style="text-align:center;">{{ region.eclaireur }}</td>
+									<td style="text-align:center;">{{ region.cheminot }}</td>
+									<td style="text-align:center;">{{ region.routier }}</td>
+								</tr>
+								{% set tot= tot + region.total %}{% set jeune= jeune + region.jeune %}{% set adulte= adulte + region.adulte %}
+								{% set homme= homme + region.homme %}{% set femme= femme + region.femme %} {% set louveteau= louveteau + region.louveteau %}
+								{% set eclaireur= eclaireur + region.eclaireur %}{% set cheminot= cheminot + region.cheminot %}{% set routier= routier + region.routier %}
+							{% endfor %}
+							<tr><td colspan="10"></td></tr>
+							</tbody>
+							<tfoot>
+							<tr>
+								<th>TOTAUX</th>
+								<th style="text-align:center;">{{ tot }}</th>
+								<th style="text-align:center;">{{ jeune }}</th>
+								<th style="text-align:center;">{{ adulte }}</th>
+								<th style="text-align:center;">{{ homme }}</th>
+								<th style="text-align:center;">{{ femme }}</th>
+								<th style="text-align:center;">{{ louveteau }}</th>
+								<th style="text-align:center;">{{ eclaireur }}</th>
+								<th style="text-align:center;">{{ cheminot }}</th>
+								<th style="text-align:center;">{{ routier }}</th>
+							</tr>
+							</tfoot>
+						</table>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+	<script>
+        function imprimer(divName) {
+            console.log('impression')
+            var printContents = document.getElementById(divName).innerHTML;
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+	</script>
+{% endblock %}
