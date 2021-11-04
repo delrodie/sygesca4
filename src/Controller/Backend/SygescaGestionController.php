@@ -2,6 +2,9 @@
 
 namespace App\Controller\Backend;
 
+use App\Entity\Compte;
+use App\Entity\Sygesca3\District;
+use App\Entity\Sygesca3\Region;
 use App\Repository\RegionReposiroty;
 use App\Utilities\GestionCotisation;
 use App\Utilities\GestionScout;
@@ -34,6 +37,17 @@ class SygescaGestionController extends AbstractController
      */
     public function index(Request $request): Response
     {
+	    $user = $this->getUser();
+	    $role = $user->getRoles();
+	    // Si l'utilisateur a pour role 0 User alors verifier si c'est un regional
+	    if ($role[0] === 'ROLE_USER'){
+		    if ($role[1] === 'ROLE_REGION'){
+			    $compte = $this->getDoctrine()->getRepository(Compte::class)->findOneBy(['user'=>$user->getId()]);
+			
+			    return $this->redirectToRoute('sygesca_gestion_region',['regionSlug'=>$compte->getRegion()->getSlug()]);
+		    }
+	    }
+		
 		// Declaration variable
 	    $region = null;
 		
@@ -70,6 +84,18 @@ class SygescaGestionController extends AbstractController
 		
 		return $this->json($scouts);
 		
+	}
+	
+	/**
+	 * @Route("/{regionSlug}/", name="sygesca_gestion_region", methods={"GET","POST"})
+	 */
+	public function region(Request $request, $regionSlug)
+	{
+		$region = $this->getDoctrine()->getRepository(Region::class)->findOneBy(['slug'=>$regionSlug]);
+		return $this->render('sygesca_gestion/region_liste.html.twig',[
+			'districts' => $this->getDoctrine()->getRepository(District::class)->findBy(['region'=>$region->getId()]),
+			'region' => $this->regionReposiroty->findOneBy(['id'=>$region->getId()])
+		]);
 	}
 	
 }

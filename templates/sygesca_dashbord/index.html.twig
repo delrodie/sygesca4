@@ -84,6 +84,8 @@
 							</tr>
 							</thead>
 							<tbody>
+							{% set tot=0 %}{% set jeune=0 %}{% set adulte=0 %}{% set homme=0 %}{% set femme=0 %}
+							{% set louveteau=0 %}{% set eclaireur=0 %}{% set cheminot=0 %}{% set routier=0 %}
 							{% for region in regions %}
 								<tr>
 									<td>{{ region.nom }}</td>
@@ -97,8 +99,26 @@
 									<td style="text-align:center;">{{ region.cheminot }}</td>
 									<td style="text-align:center;">{{ region.routier }}</td>
 								</tr>
+								{% set tot= tot + region.total %}{% set jeune= jeune + region.jeune %}{% set adulte= adulte + region.adulte %}
+								{% set homme= homme + region.homme %}{% set femme= femme + region.femme %} {% set louveteau= louveteau + region.louveteau %}
+								{% set eclaireur= eclaireur + region.eclaireur %}{% set cheminot= cheminot + region.cheminot %}{% set routier= routier + region.routier %}
 							{% endfor %}
+							<tr><td colspan="10"></td></tr>
 							</tbody>
+							<tfoot>
+							<tr>
+								<th>TOTAUX</th>
+								<th style="text-align:center;">{{ tot }}</th>
+								<th style="text-align:center;">{{ jeune }}</th>
+								<th style="text-align:center;">{{ adulte }}</th>
+								<th style="text-align:center;">{{ homme }}</th>
+								<th style="text-align:center;">{{ femme }}</th>
+								<th style="text-align:center;">{{ louveteau }}</th>
+								<th style="text-align:center;">{{ eclaireur }}</th>
+								<th style="text-align:center;">{{ cheminot }}</th>
+								<th style="text-align:center;">{{ routier }}</th>
+							</tr>
+							</tfoot>
 						</table>
 					</div>
 				</div>
