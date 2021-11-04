@@ -19,7 +19,7 @@ class CotisationRepository extends ServiceEntityRepository
         parent::__construct($registry, Cotisation::class);
     }
 	
-	public function findList($annee, $region=null, $district=null, $groupe=null)
+	public function     findList($annee, $region=null, $district=null, $groupe=null)
 	{
 		$qb = $this->createQueryBuilder('c')
 			->addSelect('m')

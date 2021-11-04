@@ -49,27 +49,43 @@
 		
 		public function statistiquesRegion($annee, $region=null, $district=null)
 		{
-			if ($region)
+			$lists=[];$i=0;
+			
+			if ($region){
 				$resultats = $this->_em->getRepository(District::class)->findBy(['region'=>$region],['nom'=>"ASC"]);
+				foreach($resultats as $resultat){
+					$lists[$i++] = [
+						'nom' => $resultat->getNom(),
+						'total' => count($this->cotisationRepository->findList($annee,null, $resultat->getId())),
+						'jeune' => count($this->cotisationRepository->findByStatut($annee,'Jeune',null, $resultat->getId())),
+						'adulte' => count($this->cotisationRepository->findByStatut($annee,'Adulte',null, $resultat->getId())),
+						'homme' => count($this->cotisationRepository->findBySexe($annee,'HOMME',null, $resultat->getId())),
+						'femme' => count($this->cotisationRepository->findBySexe($annee,'FEMME',null, $resultat->getId())),
+						'louveteau' => count($this->cotisationRepository->findByBranche($annee,'Jeune','LOUVETEAU',null, $resultat->getId())),
+						'eclaireur' => count($this->cotisationRepository->findByBranche($annee,'Jeune','ECLAIREUR',null, $resultat->getId())),
+						'cheminot' => count($this->cotisationRepository->findByBranche($annee,'Jeune','CHEMINOT',null, $resultat->getId())),
+						'routier' => count($this->cotisationRepository->findByBranche($annee,'Jeune','ROUTIER',null, $resultat->getId())),
+					];
+				}
+			}
 			elseif($district)
 				$resultats=[];
-			else
+			else{
 				$resultats = $this->_em->getRepository(Region::class)->findListActive();
-			
-			$lists=[];$i=0;
-			foreach($resultats as $resultat){
-				$lists[$i++] = [
-					'nom' => $resultat->getNom(),
-					'total' => count($this->cotisationRepository->findList($annee,null, $resultat->getId())),
-					'jeune' => count($this->cotisationRepository->findByStatut($annee,'Jeune',null, $resultat->getId())),
-					'adulte' => count($this->cotisationRepository->findByStatut($annee,'Adulte',null, $resultat->getId())),
-					'homme' => count($this->cotisationRepository->findBySexe($annee,'HOMME',null, $resultat->getId())),
-					'femme' => count($this->cotisationRepository->findBySexe($annee,'FEMME',null, $resultat->getId())),
-					'louveteau' => count($this->cotisationRepository->findByBranche($annee,'Jeune','LOUVETEAU',null, $resultat->getId())),
-					'eclaireur' => count($this->cotisationRepository->findByBranche($annee,'Jeune','ECLAIREUR',null, $resultat->getId())),
-					'cheminot' => count($this->cotisationRepository->findByBranche($annee,'Jeune','CHEMINOT',null, $resultat->getId())),
-					'routier' => count($this->cotisationRepository->findByBranche($annee,'Jeune','ROUTIER',null, $resultat->getId())),
-				];
+				foreach($resultats as $resultat){
+					$lists[$i++] = [
+						'nom' => $resultat->getNom(),
+						'total' => count($this->cotisationRepository->findList($annee, $resultat->getId())),
+						'jeune' => count($this->cotisationRepository->findByStatut($annee,'Jeune', $resultat->getId())),
+						'adulte' => count($this->cotisationRepository->findByStatut($annee,'Adulte', $resultat->getId())),
+						'homme' => count($this->cotisationRepository->findBySexe($annee,'HOMME', $resultat->getId())),
+						'femme' => count($this->cotisationRepository->findBySexe($annee,'FEMME', $resultat->getId())),
+						'louveteau' => count($this->cotisationRepository->findByBranche($annee,'Jeune','LOUVETEAU', $resultat->getId())),
+						'eclaireur' => count($this->cotisationRepository->findByBranche($annee,'Jeune','ECLAIREUR', $resultat->getId())),
+						'cheminot' => count($this->cotisationRepository->findByBranche($annee,'Jeune','CHEMINOT', $resultat->getId())),
+						'routier' => count($this->cotisationRepository->findByBranche($annee,'Jeune','ROUTIER', $resultat->getId())),
+					];
+				}
 			}
 			
 			return $lists;
