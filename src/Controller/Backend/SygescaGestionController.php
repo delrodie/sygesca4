@@ -44,7 +44,16 @@ class SygescaGestionController extends AbstractController
 		    if ($role[1] === 'ROLE_REGION'){
 			    $compte = $this->getDoctrine()->getRepository(Compte::class)->findOneBy(['user'=>$user->getId()]);
 			
-			    return $this->redirectToRoute('sygesca_gestion_region',['regionSlug'=>$compte->getRegion()->getSlug()]);
+			    //return $this->redirectToRoute('sygesca_gestion_region',['regionSlug'=>$compte->getRegion()->getSlug()]);
+			
+			    $districtID = $request->get('district');
+			    $result = $this->region($compte, $districtID);
+				
+				return $this->render($result['template'],[
+					'districts' => $result['districts'],
+					'region' => $result['region'],
+					'district' => $result['district']
+				]);
 		    }
 	    }
 		
@@ -78,24 +87,32 @@ class SygescaGestionController extends AbstractController
 		$serializer = new Serializer($normalizers, $encoders);
 		
 		$region = $request->get('region');
+		$district = $request->get('district');
 		
 		$annee = $this->_cotisation->annee();
-		$scouts = $this->_scout->getListScout($annee,$region);
+		$scouts = $this->_scout->getListScout($annee,$region,$district);
 		
 		return $this->json($scouts);
 		
 	}
 	
-	/**
-	 * @Route("/{regionSlug}/", name="sygesca_gestion_region", methods={"GET","POST"})
-	 */
-	public function region(Request $request, $regionSlug)
+	protected function region($compte, $districtID)
 	{
-		$region = $this->getDoctrine()->getRepository(Region::class)->findOneBy(['slug'=>$regionSlug]);
-		return $this->render('sygesca_gestion/region_liste.html.twig',[
-			'districts' => $this->getDoctrine()->getRepository(District::class)->findBy(['region'=>$region->getId()]),
-			'region' => $this->regionReposiroty->findOneBy(['id'=>$region->getId()])
-		]);
+		$region = $this->getDoctrine()->getRepository(Region::class)->findOneBy(['slug'=>$compte->getRegion()->getSlug()]);
+		$district = null;
+		if ($districtID){
+			$district = $this->getDoctrine()->getRepository(District::class)->findOneBy(['id'=>$districtID]);
+			$template = 'sygesca_gestion/region_districts.html.twig';
+		}else{
+			$template = 'sygesca_gestion/region_liste.html.twig';
+		}
+		
+		return  [
+			'template' => $template,
+			'districts' => $this->getDoctrine()->getRepository(District::class)->findBy(['region'=>$region->getId()],['nom'=>"ASC"]),
+			'region' => $this->regionReposiroty->findOneBy(['id'=>$region->getId()]),
+			'district' => $district
+		];
 	}
 	
 }

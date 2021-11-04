@@ -1,17 +1,17 @@
 {% extends 'backend_layout.html.twig' %}
 
-{% block title %}{{parent()}} Liste des membres de la région {{ region.nom }}{% endblock %}
+{% block title %}{{parent()}} Liste des membres du district {{ district.nom }}{% endblock %}
 
 {% block body %}
     <main>
-        <h2 class="dash-title">Liste des membres de la région {{ region.nom }}</h2>
+        <h2 class="dash-title">Liste des membres du district {{ district.nom }}</h2>
 
         <section class="recent">
             <div class="tableau-grid">
                 <div class="activity-card">
                     <div class="formulaire">
                         <div class="card-body">
-                            <form action="{{ path('sygesca_gestion_liste') }}" onchange="this.submit()" id="form_region">
+                            <form action="" onchange="this.submit()" id="form_region">
                                 <label for="search_region">District</label>
                                 <select name="district" id="search_region" class="select2">
                                     <option value="">-- Selectionnez le district --</option>
@@ -28,7 +28,6 @@
                             <thead>
                             <tr style="text-align:center;">
                                 <th>ID</th>
-                                <th>DISTRICT</th>
                                 <th>GROUPE</th>
                                 <th>STATUT</th>
                                 <th>NOM & PRENOMS</th>
@@ -66,12 +65,11 @@
 
             $('#liste').DataTable( {
                 "ajax": {
-                    url: '{{ absolute_url(path("sygesca_gestion_ajax")) }}?region='+ {{ region.id }},
+                    url: '{{ absolute_url(path("sygesca_gestion_ajax")) }}?district='+ {{ district.id }},
                     dataSrc: ''
                 },
                 "columns": [
                     { "data": "loop_index" },
-                    { "data": "district" },
                     { "data": "groupe" },
                     { "data": "statut" },
                     { "data": "identite_civile" },
